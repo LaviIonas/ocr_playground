@@ -4,5 +4,7 @@
 ```
 PIL (Pillow)             => Open an Image
 OpenCV                   => Change an Image
-Tessereact (PyTesseract) => OCR an Image
+Tesseract (PyTesseract) => OCR an Image
 ```
+
+  
