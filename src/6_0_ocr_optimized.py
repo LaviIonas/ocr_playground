@@ -14,6 +14,14 @@ TRAIN_LABELS_FILENAME = DATA_DIR + '/train-labels-idx1-ubyte/train-labels-idx1-u
 def bytes_to_int(byte_data):
     return int.from_bytes(byte_data, 'big')
 
+def calculate_accuracy(y_test, y_pred):
+    return (sum(
+        [
+            y_pred_i == y_test_i
+            for y_pred_i, y_test_i in zip(y_test, y_pred)
+        ]
+    ) / len(y_test) ) * 100
+
 def read_images(filename, n_max_images=None):
     images = []
     with open(filename, 'rb') as f:
@@ -63,6 +71,7 @@ def extract_lbp_features(X):
         lbp_features.append(normalized_features)
     return lbp_features
 
+# HOG features
 def extract_hog_features(X):
     hog_features = []
     for sample in X:
@@ -78,7 +87,8 @@ def extract_hog_features(X):
 
     return hog_features
 
-def knn(X_train, y_train, X_test, k):
+# Basic KNN
+def basic_knn(X_train, y_train, X_test, k):
     y_pred = []
 
     for test_sample in X_test:
@@ -97,6 +107,31 @@ def knn(X_train, y_train, X_test, k):
         y_pred.append(pred_label)
 
     return y_pred 
+
+def weighted_knn(X_train, y_train, X_test, k):
+    y_pred = []
+    for test_sample in X_test:
+        # Caclulate distances between sample and all training samples
+        distances = np.linalg.norm(X_train - test_sample, axis=1)
+
+        # Get indices of k nearest neightbors
+        nearest_indices = np.argsort(distances)[:k]
+
+        # Get labels of k nearest neighbors
+        nearest_labels = [y_train[idx] for idx in nearest_indices]
+
+        # Calculate weights based on inverse distances
+        weights = 1 / distances[nearest_indices]
+
+        # Weighted count of each class
+        weighted_counts = np.bincount(nearest_labels, weights=weights, minlength=len(set(y_train)))
+
+        # Predict the class with the heightest weight count
+        pred_label = np.argmax(weighted_counts)
+
+        y_pred.append(pred_label)
+
+    return y_pred
 
 def main():
     n_max = 10000
@@ -117,18 +152,16 @@ def main():
     X_train = extract_hog_features(X_train)
     X_test = extract_hog_features(X_test)
 
-    y_pred = knn(X_train, y_train, X_test, 3)
-    # print(y_pred)
-    # print(y_test)
+    # Basic KNN
+    # y_pred = basic_knn(X_train, y_train, X_test, 3)
 
-    accuracy = (sum(
-        [
-            y_pred_i == y_test_i
-            for y_pred_i, y_test_i in zip(y_test, y_pred)
-        ]
-    ) / len(y_test) ) * 100
+    # Weighted KNN
+    y_pred = weighted_knn(X_train, y_train, X_test, 3)
 
-    print(accuracy)
+    # 
+
+
+    print(calculate_accuracy(y_test, y_pred))
 
 if __name__ == '__main__':
     main()

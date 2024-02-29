@@ -74,11 +74,16 @@ No hyperparameter optimization is done yet, save that for later as a treat
 `Yields: 91%`
 
 ## Alternative KNN fucntions
+*using hog at k=3*
+
+### Weighted KNN
+`Instead of most commonly occuring neightbor, weighted average of labels of neighbors. Closer neightbors contribute more than ones farther away.`
+
+`Yields: 89.5`
 
 
 
 ```
-    Local Feature Descriptors: Instead of simply flattening the images, consider using local feature descriptors such as Histogram of Oriented Gradients (HOG), Scale-Invariant Feature Transform (SIFT), or Local Binary Patterns (LBP). These descriptors capture local patterns and structures within the image, which can improve the discriminative power of the features.
 
     Filter Bank Features: Apply a filter bank to extract texture features from the images. Filters such as Gabor filters or Gaussian filters can capture texture information that may be useful for character recognition.
 
