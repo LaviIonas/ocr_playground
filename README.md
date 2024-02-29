@@ -44,16 +44,18 @@ Tesseract (PyTesseract)  => OCR an Image
 
 `Not bad, but so terrible inefficient, I don't even wanna bother waiting for larger samples`
 
-# Section 3: simple OCR KNN but with efficient libraries (Numpy / sci-kit-learn)
+# Section 3: numpy optimized OCR simple KNN, alternative feature extraction
 
 ## Workflow
 ```
-- Use Numpy to read and process the images
-- Use MNIST 28x28 bw hand drawn number data 
-- Experiment with openCV to see if that changes OCR accuracy
-- Try more efficient KNN algorithms (k-d trees, LSH)
+- Use Numpy to read and process the images faster
+- Same Data as before
+- Same KNN function but optimized with numpy
+- Try different feature extraction methods
+- Try different KNN variations 
 
-Note: Accuracy being tested at 10,000 samples for 200 guesses
+Note: Accuracy being tested at 10,000 samples for 200 guesses where k is 3
+No hyperparameter optimization is done yet, save that for later as a treat
 ```
 
 ## Alternative Extraction Methods
@@ -70,6 +72,8 @@ Note: Accuracy being tested at 10,000 samples for 200 guesses
 `Captures distribution of gradients in localized regions, useful to detect edges and shapes`
 
 `Yields: 91%`
+
+## Alternative KNN fucntions
 
 
 

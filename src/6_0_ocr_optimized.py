@@ -78,7 +78,7 @@ def extract_hog_features(X):
 
     return hog_features
 
-def knn(X_train, y_train, X_test, k=3):
+def knn(X_train, y_train, X_test, k):
     y_pred = []
 
     for test_sample in X_test:
@@ -114,10 +114,10 @@ def main():
     # X_test = extract_lbp_features(X_test)
 
     # HOG
-    # X_train = extract_hog_features(X_train)
-    # X_test = extract_hog_features(X_test)
+    X_train = extract_hog_features(X_train)
+    X_test = extract_hog_features(X_test)
 
-    y_pred = knn(X_train, y_train, X_test, 5)
+    y_pred = knn(X_train, y_train, X_test, 3)
     # print(y_pred)
     # print(y_test)
 
