@@ -2,14 +2,14 @@
 
 # Section 1 : simple opencv image preprocessing 
 
-### Workflow
+## Workflow
 ```
 PIL (Pillow)             => Open an Image
 OpenCV                   => Change an Image
 Tesseract (PyTesseract)  => OCR an Image
 ```
 
-### Preprocessing Images for OCR
+## Preprocessing Images for OCR
 ```
 1. Inverted Images
 2. Rescaling
@@ -22,7 +22,7 @@ Tesseract (PyTesseract)  => OCR an Image
 9. Transparency / Alpha Channel
 ```
 
-### Preprocessing for multiple columns of text
+## Preprocessing for multiple columns of text
 ```
 1. Blur image (to identify overall structure, and not focusing on text itself) 
 2. Create threshold (and kernel) to separate text block 
@@ -33,7 +33,7 @@ Tesseract (PyTesseract)  => OCR an Image
 
 # Section 2: simple OCR KNN from scratch (no libraries)
 
-### Workflow
+## Workflow
 ```
 - No Libraries
 - Use MNIST 28x28 bw hand drawn number data 
@@ -46,10 +46,34 @@ Tesseract (PyTesseract)  => OCR an Image
 
 # Section 3: simple OCR KNN but with efficient libraries (Numpy / sci-kit-learn)
 
-### Workflow
+## Workflow
 ```
 - Use Numpy to read and process the images
 - Use MNIST 28x28 bw hand drawn number data 
 - Experiment with openCV to see if that changes OCR accuracy
 - Try more efficient KNN algorithms (k-d trees, LSH)
+```
+
+## Alternative Extraction Methods
+`Insead of just flattening the feature vector, we can try other methods`
+
+### Local Binary Patterns
+`Local pattern in the image, compare intensity of pixels given its surrounding pixels`
+
+```
+    Local Feature Descriptors: Instead of simply flattening the images, consider using local feature descriptors such as Histogram of Oriented Gradients (HOG), Scale-Invariant Feature Transform (SIFT), or Local Binary Patterns (LBP). These descriptors capture local patterns and structures within the image, which can improve the discriminative power of the features.
+
+    Filter Bank Features: Apply a filter bank to extract texture features from the images. Filters such as Gabor filters or Gaussian filters can capture texture information that may be useful for character recognition.
+
+    Dimensionality Reduction: Use techniques like Principal Component Analysis (PCA) or Linear Discriminant Analysis (LDA) to reduce the dimensionality of the feature space while preserving important information. This can help improve computational efficiency and reduce the risk of overfitting.
+
+    Normalization: Normalize the feature vectors to ensure that features are on the same scale. Common normalization techniques include Z-score normalization (subtracting the mean and dividing by the standard deviation) or Min-Max scaling (scaling features to a specified range).
+
+    Augmentation: Apply data augmentation techniques such as rotation, translation, scaling, or adding noise to the images to increase the diversity of the training data and improve the robustness of the feature extraction process.
+
+    Multi-Scale Features: Extract features at multiple scales to capture information at different levels of granularity. This can be achieved by resizing the images to different sizes or applying multi-scale feature extraction techniques.
+
+    Domain-Specific Features: Consider incorporating domain-specific knowledge or heuristics into the feature extraction process. For OCR tasks, features such as stroke width, character height, or the presence of specific character components (e.g., serifs in letters) may be informative.
+
+    Feature Selection: Perform feature selection to identify the most relevant features for character recognition. Techniques such as mutual information, chi-square test, or recursive feature elimination can help identify the most discriminative features.
 ```

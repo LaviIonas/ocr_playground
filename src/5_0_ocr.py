@@ -1,4 +1,4 @@
-#!/usr/bin/env pyhton
+#!/usr/bin/env python
 
 # import to visualize images
 DEBUG = False
@@ -13,7 +13,7 @@ if DEBUG:
         img = Image.fromarray(np.array(image), 'L')
         img.save(path)
 
-
+# directory shortcuts
 DATA_DIR = '../MNIST_DATA/'
 TEST_DIR = 'temp/'
 TEST_DATA_FILENAME = DATA_DIR + '/t10k-images-idx3-ubyte/t10k-images-idx3-ubyte'
@@ -21,6 +21,7 @@ TEST_LABELS_FILENAME = DATA_DIR + '/t10k-labels-idx1-ubyte/t10k-labels-idx1-ubyt
 TRAIN_DATA_FILENAME = DATA_DIR + '/train-images-idx3-ubyte/train-images-idx3-ubyte'
 TRAIN_LABELS_FILENAME = DATA_DIR + '/train-labels-idx1-ubyte/train-labels-idx1-ubyte'
 
+# convert bytes to ints
 def bytes_to_int(byte_data):
     return int.from_bytes(byte_data, 'big')
 
