@@ -79,9 +79,14 @@ No hyperparameter optimization is done yet, save that for later as a treat
 ### Weighted KNN
 `Instead of most commonly occuring neightbor, weighted average of labels of neighbors. Closer neightbors contribute more than ones farther away.`
 
-`Yields: 89.5`
+`Yields: 89.5%`
 
+### Radius-Based KNN
+`Instead of a fixed number of neightbors, we consider all neighbors in a radius around the sample`
 
+`Yields: 86.5%`
+
+###
 
 ```
 

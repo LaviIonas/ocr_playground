@@ -133,6 +133,31 @@ def weighted_knn(X_train, y_train, X_test, k):
 
     return y_pred
 
+def rad_knn(X_train, y_train, X_test, rad=0.5):
+    y_pred = []
+    for test_sample in X_test:
+        # Caclulate distances between sample and all training samples
+        distances = np.linalg.norm(X_train - test_sample, axis=1)
+
+        # Find indices of samples within the specified radius
+        within_rad_idx = np.where(distances <= rad)[0]
+
+        if within_rad_idx.size == 0:
+            # No samples around found, default prediction
+            n_n_idx = np.argmin(distances)
+            pred_label = y_train[n_n_idx]
+
+        else:
+            # Get labels of sampleswithin the radius 
+            labels_within_rad = [y_train[idx] for idx in within_rad_idx]
+
+            # Predict the most frequent label
+            pred_label = max(set(labels_within_rad), key=labels_within_rad.count)
+
+        y_pred.append(pred_label)
+
+    return y_pred
+
 def main():
     n_max = 10000
     X_train = read_images(TRAIN_DATA_FILENAME, n_max) 
@@ -156,9 +181,10 @@ def main():
     # y_pred = basic_knn(X_train, y_train, X_test, 3)
 
     # Weighted KNN
-    y_pred = weighted_knn(X_train, y_train, X_test, 3)
+    # y_pred = weighted_knn(X_train, y_train, X_test, 3)
 
-    # 
+    # Radius-Based KNN
+    y_pred = rad_knn(X_train, y_train, X_test, 0.5)
 
 
     print(calculate_accuracy(y_test, y_pred))
