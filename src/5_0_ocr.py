@@ -51,8 +51,23 @@ def flatten_list(l):
 def extract_features(X):
     return [flatten_list(sample) for sample in X]
 
-def knn():
+def dist(x, y):
+    # Euclidian distance
+
+def get_training_distances_for_test_sample(X_train, test_sample):
+    return [dist(train_sample, test_sample) for train_sample in X_train]
     
+
+def knn(X_train, y_train, X_test, k=3):
+    '''
+    X_train => [img1, img2, img3, ...]
+    y_train => [1,    3,    9,    ...]
+    '''
+    y_pred = []
+    for sample in X_test:
+        y_sample = ...
+        y_pred.append(y_sample)
+    return y_pred
 
 def main():
     n_max = 100
