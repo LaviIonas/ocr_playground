@@ -1,13 +1,17 @@
 # OCR Playground
 
-## Workflow
+# Section 1
+
+## Simple opencv image preprocessing for better ocr results
+
+### Workflow
 ```
 PIL (Pillow)             => Open an Image
 OpenCV                   => Change an Image
 Tesseract (PyTesseract)  => OCR an Image
 ```
 
-## Preprocessing Images for OCR
+### Preprocessing Images for OCR
 ```
 1. Inverted Images
 2. Rescaling
@@ -20,7 +24,7 @@ Tesseract (PyTesseract)  => OCR an Image
 9. Transparency / Alpha Channel
 ```
 
-## Preprocessing for multiple columns of text
+### Preprocessing for multiple columns of text
 ```
 1. Blur image (to identify overall structure, and not focusing on text itself) 
 2. Create threshold (and kernel) to separate text block 
@@ -28,3 +32,9 @@ Tesseract (PyTesseract)  => OCR an Image
 4. Perform contour (finding boundaries)  
 5. Perform loop to only draw boundrary box of specific size (to exclude small boxes)
 ```
+
+# Section 2
+
+## OCR ML from scratch (for understanding)
+
+###
