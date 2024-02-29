@@ -37,4 +37,4 @@ Tesseract (PyTesseract)  => OCR an Image
 
 ## OCR ML from scratch (for understanding)
 
-###
+### Read ubyte files
