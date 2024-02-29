@@ -102,7 +102,7 @@ def knn(X_train, y_train, X_test, k=3):
     return y_pred
 
 def main():
-    n_max = 10000
+    n_max = 1000
 
     X_train = read_images(TRAIN_DATA_FILENAME, n_max)
     y_train = read_labels(TRAIN_LABELS_FILENAME, n_max)

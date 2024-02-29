@@ -1,8 +1,6 @@
 # OCR Playground
 
-# Section 1
-
-## Simple opencv image preprocessing for better ocr results
+# Section 1 : simple opencv image preprocessing 
 
 ### Workflow
 ```
@@ -33,8 +31,25 @@ Tesseract (PyTesseract)  => OCR an Image
 5. Perform loop to only draw boundrary box of specific size (to exclude small boxes)
 ```
 
-# Section 2
+# Section 2: simple OCR KNN from scratch (no libraries)
 
-## OCR ML from scratch (for understanding)
+### Workflow
+```
+- No Libraries
+- Use MNIST 28x28 bw hand drawn number data 
+- Simple Euclidian distance between pixels and KNN to predict numbers
+```
 
-### Read ubyte files
+`Achieved Accuracy @ 1000 training samples predicting 200 numbers: 85.5%`
+
+`Not bad, but so terrible inefficient, I don't even wanna bother waiting for larger samples`
+
+# Section 3: simple OCR KNN but with efficient libraries (Numpy / sci-kit-learn)
+
+### Workflow
+```
+- Use Numpy to read and process the images
+- Use MNIST 28x28 bw hand drawn number data 
+- Experiment with openCV to see if that changes OCR accuracy
+- Try more efficient KNN algorithms (k-d trees, LSH)
+```
