@@ -1,4 +1,6 @@
 import numpy as np
+from skimage.feature import local_binary_pattern
+from skimage.feature import hog
 
 # directory shortcuts
 DATA_DIR = '../MNIST_DATA/'
@@ -44,8 +46,37 @@ def read_labels(filename, n_max_labels=None):
     return labels
 
 # Generate flat feature vector
-def flat_feature_vector(X):
+def extract_flat_feature_vector(X):
     return [sample.flatten() for sample in X]
+
+# LBP features
+def extract_lbp_features(X):
+    lbp_features = []
+    for sample in X:
+        # Compute LBP features
+        lbp = local_binary_pattern(sample, P=8, R=1, method='uniform')
+
+        # Flatten and Normalize Features
+        flattened_features = lbp.flatten()
+        normalized_features = (flattened_features - flattened_features.mean()) / flattened_features.std()
+        
+        lbp_features.append(normalized_features)
+    return lbp_features
+
+def extract_hog_features(X):
+    hog_features = []
+    for sample in X:
+        # Compute HOG features
+        hog_feature = hog(sample, orientations=9, 
+                           pixels_per_cell=(8,8), 
+                           cells_per_block=(2,2),
+                           block_norm='L2-Hys')
+        
+        # Flatten Features
+        flattened_features = hog_feature.flatten()
+        hog_features.append(flattened_features)
+
+    return hog_features
 
 def knn(X_train, y_train, X_test, k=3):
     y_pred = []
@@ -68,14 +99,23 @@ def knn(X_train, y_train, X_test, k=3):
     return y_pred 
 
 def main():
-    n_max = 30000
+    n_max = 10000
     X_train = read_images(TRAIN_DATA_FILENAME, n_max) 
     y_train = read_labels(TRAIN_LABELS_FILENAME, n_max) 
     X_test = read_images(TEST_DATA_FILENAME, 200)
     y_test = read_labels(TEST_LABELS_FILENAME, 200)
 
-    X_train = flat_feature_vector(X_train)
-    X_test = flat_feature_vector(X_test)
+    # Flatten Feature Vector
+    # X_train = extract_flat_feature_vector(X_train)
+    # X_test = extract_flat_feature_vector(X_test)
+
+    # LBP 
+    # X_train = extract_lbp_features(X_train)
+    # X_test = extract_lbp_features(X_test)
+
+    # HOG
+    # X_train = extract_hog_features(X_train)
+    # X_test = extract_hog_features(X_test)
 
     y_pred = knn(X_train, y_train, X_test, 5)
     # print(y_pred)

@@ -52,13 +52,26 @@ Tesseract (PyTesseract)  => OCR an Image
 - Use MNIST 28x28 bw hand drawn number data 
 - Experiment with openCV to see if that changes OCR accuracy
 - Try more efficient KNN algorithms (k-d trees, LSH)
+
+Note: Accuracy being tested at 10,000 samples for 200 guesses
 ```
 
 ## Alternative Extraction Methods
 `Insead of just flattening the feature vector, we can try other methods`
 
-### Local Binary Patterns
+`Yeilds: 45%`
+
+### Local Binary Patterns (LBP)
 `Local pattern in the image, compare intensity of pixels given its surrounding pixels`
+
+`Yields: 90%`
+
+### Histogram of Oriented Gradients (HOG)
+`Captures distribution of gradients in localized regions, useful to detect edges and shapes`
+
+`Yields: 91%`
+
+
 
 ```
     Local Feature Descriptors: Instead of simply flattening the images, consider using local feature descriptors such as Histogram of Oriented Gradients (HOG), Scale-Invariant Feature Transform (SIFT), or Local Binary Patterns (LBP). These descriptors capture local patterns and structures within the image, which can improve the discriminative power of the features.
