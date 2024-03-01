@@ -90,29 +90,3 @@ No hyperparameter optimization is done yet, save that for later as a treat
 `partition high dimnetional data into trees to reduce computation time.`
 
 `Yields: 89.5%`
-
-
-
-
-```
-
-    Locality-Sensitive Hashing (LSH):
-
-    Kernel KNN:
-
-
-
-    Filter Bank Features: Apply a filter bank to extract texture features from the images. Filters such as Gabor filters or Gaussian filters can capture texture information that may be useful for character recognition.
-
-    Dimensionality Reduction: Use techniques like Principal Component Analysis (PCA) or Linear Discriminant Analysis (LDA) to reduce the dimensionality of the feature space while preserving important information. This can help improve computational efficiency and reduce the risk of overfitting.
-
-    Normalization: Normalize the feature vectors to ensure that features are on the same scale. Common normalization techniques include Z-score normalization (subtracting the mean and dividing by the standard deviation) or Min-Max scaling (scaling features to a specified range).
-
-    Augmentation: Apply data augmentation techniques such as rotation, translation, scaling, or adding noise to the images to increase the diversity of the training data and improve the robustness of the feature extraction process.
-
-    Multi-Scale Features: Extract features at multiple scales to capture information at different levels of granularity. This can be achieved by resizing the images to different sizes or applying multi-scale feature extraction techniques.
-
-    Domain-Specific Features: Consider incorporating domain-specific knowledge or heuristics into the feature extraction process. For OCR tasks, features such as stroke width, character height, or the presence of specific character components (e.g., serifs in letters) may be informative.
-
-    Feature Selection: Perform feature selection to identify the most relevant features for character recognition. Techniques such as mutual information, chi-square test, or recursive feature elimination can help identify the most discriminative features.
-```
