@@ -2,6 +2,10 @@ import numpy as np
 from skimage.feature import local_binary_pattern
 from skimage.feature import hog
 
+from sklearn.neighbors import KDTree
+from sklearn.neighbors import KernelDensity, NearestNeighbors
+from sklearn.metrics.pairwise import pairwise_kernels
+
 # directory shortcuts
 DATA_DIR = '../MNIST_DATA/'
 TEST_DIR = 'temp/'
@@ -108,6 +112,7 @@ def basic_knn(X_train, y_train, X_test, k):
 
     return y_pred 
 
+# Weighted KNN
 def weighted_knn(X_train, y_train, X_test, k):
     y_pred = []
     for test_sample in X_test:
@@ -133,6 +138,7 @@ def weighted_knn(X_train, y_train, X_test, k):
 
     return y_pred
 
+# Radius Based KNN
 def rad_knn(X_train, y_train, X_test, rad=0.5):
     y_pred = []
     for test_sample in X_test:
@@ -154,6 +160,25 @@ def rad_knn(X_train, y_train, X_test, rad=0.5):
             # Predict the most frequent label
             pred_label = max(set(labels_within_rad), key=labels_within_rad.count)
 
+        y_pred.append(pred_label)
+
+    return y_pred
+
+# KDTree KNN
+def kd_tree_knn(X_train, y_train, X_test, k):
+    # Build KD-Tree on training data
+    tree = KDTree(X_train)
+
+    # Query KD-Tree for nearest neighbor
+    _, indices = tree.query(X_test, k=k)
+
+    y_pred = []
+    for neighbor_idx in indices:
+        # Get labels of nearest neighbors
+        nearest_labels = [y_train[idx] for idx in neighbor_idx]
+
+        # Make prediction based on majority vote
+        pred_label = max(set(nearest_labels), key=nearest_labels.count)
         y_pred.append(pred_label)
 
     return y_pred
@@ -184,8 +209,10 @@ def main():
     # y_pred = weighted_knn(X_train, y_train, X_test, 3)
 
     # Radius-Based KNN
-    y_pred = rad_knn(X_train, y_train, X_test, 0.5)
+    # y_pred = rad_knn(X_train, y_train, X_test, 0.5)
 
+    # KDTree KNN
+    y_pred = kd_tree_knn(X_train, y_train, X_test, 3)
 
     print(calculate_accuracy(y_test, y_pred))
 

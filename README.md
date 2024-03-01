@@ -86,9 +86,21 @@ No hyperparameter optimization is done yet, save that for later as a treat
 
 `Yields: 86.5%`
 
-###
+### KD-Tree
+`partition high dimnetional data into trees to reduce computation time.`
+
+`Yields: 89.5%`
+
+
+
 
 ```
+
+    Locality-Sensitive Hashing (LSH):
+
+    Kernel KNN:
+
+
 
     Filter Bank Features: Apply a filter bank to extract texture features from the images. Filters such as Gabor filters or Gaussian filters can capture texture information that may be useful for character recognition.
 
