@@ -90,3 +90,8 @@ No hyperparameter optimization is done yet, save that for later as a treat
 `partition high dimnetional data into trees to reduce computation time.`
 
 `Yields: 89.5%`
+
+# Section 4: simple CNN from scratch, without OCR 
+
+
+
