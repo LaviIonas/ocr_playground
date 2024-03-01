@@ -184,12 +184,15 @@ def kd_tree_knn(X_train, y_train, X_test, k):
     return y_pred
 
 def main():
-    n_max = 10000
+    n_max = 60000
     X_train = read_images(TRAIN_DATA_FILENAME, n_max) 
     y_train = read_labels(TRAIN_LABELS_FILENAME, n_max) 
-    X_test = read_images(TEST_DATA_FILENAME, 200)
-    y_test = read_labels(TEST_LABELS_FILENAME, 200)
+    X_test = read_images(TEST_DATA_FILENAME, 400)
+    y_test = read_labels(TEST_LABELS_FILENAME, 400)
 
+    """
+    Feature Extraction
+    """
     # Flatten Feature Vector
     # X_train = extract_flat_feature_vector(X_train)
     # X_test = extract_flat_feature_vector(X_test)
@@ -202,6 +205,9 @@ def main():
     X_train = extract_hog_features(X_train)
     X_test = extract_hog_features(X_test)
 
+    """
+    KNN
+    """
     # Basic KNN
     # y_pred = basic_knn(X_train, y_train, X_test, 3)
 
@@ -212,7 +218,7 @@ def main():
     # y_pred = rad_knn(X_train, y_train, X_test, 0.5)
 
     # KDTree KNN
-    y_pred = kd_tree_knn(X_train, y_train, X_test, 3)
+    y_pred = kd_tree_knn(X_train, y_train, X_test, 5)
 
     print(calculate_accuracy(y_test, y_pred))
 
