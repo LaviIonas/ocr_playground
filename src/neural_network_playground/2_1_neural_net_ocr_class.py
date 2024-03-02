@@ -50,6 +50,9 @@ def main():
     X_test = read_images(TEST_DATA_FILENAME, n_max)
     y_test = read_labels(TEST_LABELS_FILENAME, n_max)
 
+    X_train = np.array(X_train)
+    X_test = np.array(X_test)
+
     X_train = X_train.reshape(60000, 784)
     X_test = X_test.reshape(60000, 784)
 
