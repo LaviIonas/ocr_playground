@@ -91,7 +91,7 @@ No hyperparameter optimization is done yet, save that for later as a treat
 
 `Yields: 89.5%`
 
-# Section 4: simple CNN from scratch, without OCR 
+# Section 4: simple Neural Network from scratch
 
 
 
