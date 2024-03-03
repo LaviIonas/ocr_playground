@@ -2,6 +2,8 @@ import numpy as np
 import math
 from matplotlib import pyplot as plt
 
+np.random.seed(3)
+
 DATA_DIR = '../../MNIST_DATA'
 TEST_DATA_FILENAME = DATA_DIR + '/t10k-images-idx3-ubyte/t10k-images-idx3-ubyte'
 TEST_LABELS_FILENAME = DATA_DIR + '/t10k-labels-idx1-ubyte/t10k-labels-idx1-ubyte'
@@ -43,23 +45,32 @@ def read_labels(filename, n_max_labels=None):
         labels = label_data.tolist()
     return labels
 
+class Linear():
+    def __init__(self, in_size, out_size):
+        # init weights
+        self.W = np.random.randn(in_size, out_size) * 0.1
+        # init bias
+        self.b = np.zeros((1, out_size))
+        self.params = [self.W, self.b]
+        self.gradW = None
+        self.gradB = None
+        self.gradInput = None
+
 def main():
-    n_max = 1
-    X_train = read_images(TRAIN_DATA_FILENAME, n_max) 
-    y_train = read_labels(TRAIN_LABELS_FILENAME, n_max) 
-    X_test = read_images(TEST_DATA_FILENAME, n_max)
-    y_test = read_labels(TEST_LABELS_FILENAME, n_max)
+    X_train = read_images(TRAIN_DATA_FILENAME) 
+    y_train = read_labels(TRAIN_LABELS_FILENAME) 
+    X_test = read_images(TEST_DATA_FILENAME)
+    y_test = read_labels(TEST_LABELS_FILENAME)
 
     X_train = np.array(X_train)
     X_test = np.array(X_test)
 
-    X_train = X_train.reshape(60000, 784)
-    X_test = X_test.reshape(60000, 784)
+    y_train = np.array(y_train)
+    y_test = np.array(y_test)
 
-    
-    print(X_train.shape)
-    print(X_test.shape)
-    
-    
+    # Normalize the pixel data from 0-255 to 0-1
+    X_train = X_train / 255.0
+    X_test = X_test / 255.0
+
 if __name__ == '__main__':
     main()
