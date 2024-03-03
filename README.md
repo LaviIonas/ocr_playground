@@ -93,5 +93,27 @@ No hyperparameter optimization is done yet, save that for later as a treat
 
 # Section 4: simple Neural Network from scratch
 
+## Workflow
+```
+- Use Numpy and Math to make a simple neural net
+- Create a linear layer
+- Implement forward and backward propagation
+- ReLU and softmax activation functions
+- CrossEntropy loss function
+- Update weights and biases 
+- Implement batches 
+- Train the model
+- Experiment with the hyperparameters 
+```
+
+`Through a series of weights and biases we generate non linear relations between nodes that can capture patterns in the pixel structure of images in order to predict their numbers`
+
+`Highest Yield: 98%`
 
 
+# Section 5: simple document ROI OCR
+
+## Workflow
+```
+- 
+```
