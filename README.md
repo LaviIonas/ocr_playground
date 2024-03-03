@@ -31,7 +31,7 @@ Tesseract (PyTesseract)  => OCR an Image
 5. Perform loop to only draw boundrary box of specific size (to exclude small boxes)
 ```
 
-# Section 2: simple OCR KNN from scratch (no libraries)
+# Section 2: simple OCR KNN from scratch
 
 ## Workflow
 ```
