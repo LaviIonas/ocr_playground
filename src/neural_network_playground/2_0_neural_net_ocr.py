@@ -68,10 +68,10 @@ def forward_prop(W1, b1, W2, b2, X):
     # print("w2; ", W2.shape)
     # print("b2; ", b2.shape)
 
-    Z1 = np.dot(W1, X) + b1
+    Z1 = np.dot(X, W1) + b1
     A1 = ReLU(Z1)
 
-    Z2 = np.dot(W2, A1) + b2
+    Z2 = np.dot(A1, W2) + b2
     A2 = softmax(Z2)
 
     return Z1, A1, Z2, A2
@@ -158,8 +158,8 @@ def main():
     X_test = read_images(TEST_DATA_FILENAME, n_max)
     y_test = read_labels(TEST_LABELS_FILENAME, 1)
 
-    X_train = np.array(X_train).T
-    X_test = np.array(X_test).T
+    X_train = np.array(X_train)
+    X_test = np.array(X_test)
     
     # print(X_test.shape)
     # print(X_train.shape)
