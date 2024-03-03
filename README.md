@@ -111,9 +111,11 @@ No hyperparameter optimization is done yet, save that for later as a treat
 `Highest Yield: 98%`
 
 
-# Section 5: simple document ROI OCR
+# Section 5: a string of handwritten numbers
 
 ## Workflow
 ```
-- 
+- Take an image of multiple handwritten numbers
+- Break them down 
+- Analyze and predict 
 ```
