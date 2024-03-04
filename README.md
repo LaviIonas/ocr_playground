@@ -111,11 +111,11 @@ No hyperparameter optimization is done yet, save that for later as a treat
 `Highest Yield: 98%`
 
 
-# Section 5: a string of handwritten numbers
+# Section 5: generating new data from MNIST (sequence of digits)
 
 ## Workflow
 ```
-- Take an image of multiple handwritten numbers
-- Break them down 
-- Analyze and predict 
+- Take individual digits and slap them together in a row
+- Take that row of digits and place them on a new larger canvas chaotically
+- Output a new type of data for future ROI analysis 
 ```

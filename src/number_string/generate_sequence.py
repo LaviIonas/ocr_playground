@@ -15,53 +15,42 @@ class MNIST_Sequence():
             self.label_map[label].append(index)
 
     def __select_random_label(self, label):
-        if len(self.label_map[label]) > 0:
+        if self.label_map[label]:
             return choice(self.label_map[label])
         else:
-            print("No images for the number " + str(label) +
-                  " is available. Please try with a different number.")
+            print(f"No images for the number {label} is available. \
+                    Please try with a different number.")
             exit()
 
     def generate_image_sequence(self, sequence):
-        sequence_length = len(sequence)
-        image_sequence = []
-        for digit in sequence:
-            random_label_number = self.__select_random_label(digit)
-            image_sequence.append(self.images[random_label_number])
-            return np.hstack(image_sequence)
+        images = [self.images[self.__select_random_label(label)] for label in sequence]
+        image = np.hstack(images)
+        return image
 
-    def generate_sequence_with_noise(self, sequence, max_shift=2):
-        sequence_length = len(sequence)
-        image_sequence = []
-        for digit in sequence:
-            random_label_number = self.__select_random_label(digit)
-            noisy_image = self.add_random_noise(self.images[random_label_number], max_shift)
-            image_sequence.append(noisy_image)
-        return np.hstack(image_sequence)
+    def generate_non_uniform_sequence(self, sequence):
+        h = sequence.shape[0]
+        w = sequence.shape[1]
 
-    def add_random_noise(self, image, max_shift):
-        noisy_image = image.copy()
-        shift = np.random.randint(-max_shift, max_shift+1)
-        noisy_image = np.roll(noisy_image, shift, axis=0)
-        shift = np.random.randint(-max_shift, max_shift+1)
-        noisy_image = np.roll(noisy_image, shift, axis=1)
-        return noisy_image
+        canvas = np.zeros((h, w), dtype=np.uint8)
+        offset = 0
 
-def print_sequence(sequence):
-    fig, axes = plt.subplots(1, len(sequence), figsize=(len(sequence)*2, 2))
-    for i, digit in enumerate(sequence):
-        axes[i].imshow(digit, cmap='gray')
-        axes[i].axis('off')
-        axes[i].set_title(f'Digit {i+1}')
-    plt.show() 
+        for i in range(0, int(w/h)):
+            canvas[:, :28] = sequence[:, :28]
+
+        return canvas
+
+def show_image(image):
+    plt.imshow(image, cmap='gray')
+    plt.axis('off')
+    plt.show()
 
 def main():
     m = MNIST_Sequence()
-    sequence = [0]  # Example sequence
-    sequence_with_noise = m.generate_sequence_with_noise(sequence)
-    sequence_without_noise = m.generate_image_sequence(sequence)
-    print_sequence(sequence_with_noise)
-    print_sequence(sequence_without_noise)
+    sequence = [2]
+    img_uniform = m.generate_image_sequence(sequence)
+    canvas = m.generate_non_uniform_sequence(img_uniform)
+    print(canvas)
+    # show_image(canvas)
 
 if __name__ == '__main__':
     main()
