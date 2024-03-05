@@ -6,6 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from multiprocessing import Pool
 from functools import partial
+import idx2numpy
+import os
 
 class MNIST_Sequence():
     def __init__(self):
@@ -111,12 +113,19 @@ class MNIST_Sequence():
 
 def main():
     m = MNIST_Sequence()
-    train_dataset, train_labels = m.generate_database(n=5)
-    print(train_dataset.shape)
-    print(train_labels.shape)
+    train_dataset, train_labels = m.generate_database(n=100)
+    test_dataset, test_labels = m.generate_database(n=100)
+
+    output_folder = "../../MNIST_SEQUENCE"
+
+    idx2numpy.convert_to_file(os.path.join(output_folder, "train-images.idx"), train_dataset)
+    idx2numpy.convert_to_file(os.path.join(output_folder, "train-labels.idx"), train_labels.astype(np.uint8))
+    idx2numpy.convert_to_file(os.path.join(output_folder, "test-images.idx"), test_dataset)
+    idx2numpy.convert_to_file(os.path.join(output_folder, "test-labels.idx"), test_labels.astype(np.uint8))
 
 if __name__ == '__main__':
     main()
+
 # def show_image(image):
 #     plt.imshow(image, cmap='gray')
 #     plt.axis('off')
