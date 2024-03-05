@@ -41,7 +41,7 @@ class MNIST_Sequence():
 
         return (left_bound, right_bound)
 
-    def generate_image_sequence(self, sequence):
+    def __generate_image_sequence(self, sequence):
         images = []
         bounds = []
         
@@ -52,7 +52,10 @@ class MNIST_Sequence():
 
         return images, bounds
 
-    def generate_non_uniform_sequence(self, sequence, bounds):
+    def generate_non_uniform_sequence(self, seq):
+        
+        sequence, bounds = self.__generate_image_sequence(seq)
+
         h, w = 28, 28
         canvas_h = h + 10
         canvas_w = w + 10
@@ -62,10 +65,8 @@ class MNIST_Sequence():
 
         digits_with_noise = []
 
-        for i, digit in enumerate(sequence):
+        for digit, (l_bound, r_bound) in zip(sequence, bounds):
             canvas = np.zeros((canvas_h, canvas_w), dtype=np.float32)
-
-            l_bound, r_bound = bounds[i]
 
             # random vertical pos
             y_pos = random.randint(0, 10)
@@ -77,20 +78,13 @@ class MNIST_Sequence():
 
             # use v_pos and h_pos as starting position in canvas and translate digit
             if x_pos < 0:
-                array_offset = -x_pos
-
                 digit = np.array(digit[:, -x_pos:])
-                x_digit = digit.shape[1]
-
-                canvas[y_start:y_end, 0:x_digit] = digit
+                canvas[y_start:y_end, 0:digit.shape[1]] = digit
             elif w+x_pos > canvas_w:
                 offset = w + x_pos - canvas_w
-                digit = np.array(digit[:, :w-offset])
-                x_digit = digit.shape[1]
-                print(digit.shape)
+                digit = digit[:, :w-offset]
                 canvas[y_start:y_end, x_pos:canvas_w] = digit
             else:
-                digit = np.array(digit[:, :])
                 canvas[y_start:y_end, x_pos:x_pos+w] = digit
 
             # append canvas to array
@@ -107,12 +101,9 @@ def show_image(image):
 
 def main():
     m = MNIST_Sequence()
-    sequence = [2,3]
-    img_uniform, bounds = m.generate_image_sequence(sequence)
-    canvas = m.generate_non_uniform_sequence(img_uniform, bounds)
-    # print(img_uniform)
-    # print(bounds)
-    # print(img_uniform)
+    sequence = [0,1,2,3,4,5,6,7,8,9]
+    canvas = m.generate_non_uniform_sequence(sequence)
+
     print(canvas)
     show_image(canvas)
 
