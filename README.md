@@ -119,3 +119,13 @@ No hyperparameter optimization is done yet, save that for later as a treat
 - Take that row of digits and place them on a new larger canvas chaotically
 - Output a new type of data for future ROI analysis 
 ```
+
+`This is output of digits stacked with no positional noise`
+
+![alt text](/src/number_string/test_output/uniform_num.png)
+
+`This is output of digits stacked with positional noise. Mind the overlap`
+
+![alt text](/src/number_string/test_output/num_sequence.png)
+
+`Will Make a new dataset to use for future OCR purposes`

@@ -94,18 +94,29 @@ class MNIST_Sequence():
 
         return digits_with_noise
 
-def show_image(image):
-    plt.imshow(image, cmap='gray')
-    plt.axis('off')
-    plt.show()
+    def generate_database(n):
+        dataset = []
+        labels = []
+
+        for i in range(n):
+            sequence = np.random.randint(0,10, size=5)
+            m = MNIST_Sequence()
+            sequence_array = m.generate_non_uniform_sequence(seq=sequence)
+            dataset.append(sequence_array)
+            labels.append(sequence)
+
+        return np.array(dataset), np.array(labels)
+
+# def show_image(image):
+#     plt.imshow(image, cmap='gray')
+#     plt.axis('off')
+#     plt.show()
+
 
 def main():
-    m = MNIST_Sequence()
-    sequence = [0,1,2,3,4,5,6,7,8,9]
-    canvas = m.generate_non_uniform_sequence(sequence)
-
-    print(canvas)
-    show_image(canvas)
+    train_dataset, train_labels = generate_database(n=5)
+    print(train_dataset.shape)
+    print(train_labels.shape)
 
 if __name__ == '__main__':
     main()
