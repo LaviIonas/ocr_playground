@@ -55,9 +55,9 @@ class MNIST_Sequence():
 
         return (images, bounds)
 
-    def generate_non_uniform_sequence(self, seq, idx, precomputed_sequences):
+    def generate_non_uniform_sequence(self, seq):
         
-        sequence, bounds = precomputed_sequences[idx]
+        sequence, bounds = self.__generate_image_sequence(seq)
 
         h, w = 28, 28
         canvas_h = h + 10
@@ -101,24 +101,13 @@ class MNIST_Sequence():
         dataset = []
         labels = []
 
-       # Precompute image sequences and bounds for each label
-        precomputed_sequences = {}
-        for label in range(10):
-            precomputed_sequences[label] = [self.__generate_image_sequence([label]*5) for _ in range(n)]
-
-        # Define a partial function with all required arguments
-        partial_func = partial(self.generate_non_uniform_sequence, precomputed_sequences=precomputed_sequences)
-
-        with Pool() as pool:
-            results = pool.starmap(partial_func, [(self.generate_random_sequence(), idx, precomputed_sequences) for idx in range(n)])
-
-        for result in results:
-            dataset.append(result[0])
-            labels.append(result[1])
+        for i in range(n):
+            sequence = np.random.randint(0,10, size=5)
+            sequence_array = self.generate_non_uniform_sequence(seq=sequence)
+            dataset.append(sequence_array)
+            labels.append(sequence)
 
         return np.array(dataset), np.array(labels)
-
-
 
 def main():
     m = MNIST_Sequence()
