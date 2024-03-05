@@ -118,8 +118,8 @@ def show_image(image):
 
 def main():
     m = MNIST_Sequence()
-    train_dataset, train_labels = m.generate_database(n=10000)
-    test_dataset, test_labels = m.generate_database(n=5000)
+    train_dataset, train_labels = m.generate_database(n=100)
+    test_dataset, test_labels = m.generate_database(n=100)
 
     output_folder = "../../MNIST_SEQUENCE"
 
