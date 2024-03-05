@@ -77,19 +77,21 @@ class MNIST_Sequence():
 
             # use v_pos and h_pos as starting position in canvas and translate digit
             if x_pos < 0:
-                x_start = 0
                 array_offset = -x_pos
 
                 digit = np.array(digit[:, -x_pos:])
                 x_digit = digit.shape[1]
 
-                canvas[y_start:y_end, x_start:x_digit] = digit
+                canvas[y_start:y_end, 0:x_digit] = digit
+            elif w+x_pos > canvas_w:
+                offset = w + x_pos - canvas_w
+                digit = np.array(digit[:, :w-offset])
+                x_digit = digit.shape[1]
+                print(digit.shape)
+                canvas[y_start:y_end, x_pos:canvas_w] = digit
             else:
-                x_start = x_pos
-                x_end = x_start + w
-
                 digit = np.array(digit[:, :])
-                canvas[y_start:y_end, x_start:x_end] = digit
+                canvas[y_start:y_end, x_pos:x_pos+w] = digit
 
             # append canvas to array
             digits_with_noise.append(canvas)
