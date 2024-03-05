@@ -1,8 +1,11 @@
 from load_mnist_digits import MNIST 
+
 from random import choice
 import random
 import numpy as np
 import matplotlib.pyplot as plt
+from multiprocessing import Pool
+from functools import partial
 
 class MNIST_Sequence():
     def __init__(self):
@@ -50,11 +53,11 @@ class MNIST_Sequence():
             bounds.append(self.__determine_bounds(img))
             images.append(img)
 
-        return images, bounds
+        return (images, bounds)
 
-    def generate_non_uniform_sequence(self, seq):
+    def generate_non_uniform_sequence(self, seq, idx, precomputed_sequences):
         
-        sequence, bounds = self.__generate_image_sequence(seq)
+        sequence, bounds = precomputed_sequences[idx]
 
         h, w = 28, 28
         canvas_h = h + 10
@@ -94,29 +97,38 @@ class MNIST_Sequence():
 
         return digits_with_noise
 
-    def generate_database(n):
+    def generate_database(self, n):
         dataset = []
         labels = []
 
-        for i in range(n):
-            sequence = np.random.randint(0,10, size=5)
-            m = MNIST_Sequence()
-            sequence_array = m.generate_non_uniform_sequence(seq=sequence)
-            dataset.append(sequence_array)
-            labels.append(sequence)
+       # Precompute image sequences and bounds for each label
+        precomputed_sequences = {}
+        for label in range(10):
+            precomputed_sequences[label] = [self.__generate_image_sequence([label]*5) for _ in range(n)]
+
+        # Define a partial function with all required arguments
+        partial_func = partial(self.generate_non_uniform_sequence, precomputed_sequences=precomputed_sequences)
+
+        with Pool() as pool:
+            results = pool.starmap(partial_func, [(self.generate_random_sequence(), idx, precomputed_sequences) for idx in range(n)])
+
+        for result in results:
+            dataset.append(result[0])
+            labels.append(result[1])
 
         return np.array(dataset), np.array(labels)
 
-# def show_image(image):
-#     plt.imshow(image, cmap='gray')
-#     plt.axis('off')
-#     plt.show()
 
 
 def main():
-    train_dataset, train_labels = generate_database(n=5)
+    m = MNIST_Sequence()
+    train_dataset, train_labels = m.generate_database(n=5)
     print(train_dataset.shape)
     print(train_labels.shape)
 
 if __name__ == '__main__':
     main()
+# def show_image(image):
+#     plt.imshow(image, cmap='gray')
+#     plt.axis('off')
+#     plt.show()
