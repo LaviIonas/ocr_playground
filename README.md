@@ -129,3 +129,5 @@ No hyperparameter optimization is done yet, save that for later as a treat
 ![alt text](/src/number_string/test_output/num_sequence.png)
 
 `Will Make a new dataset to use for future OCR purposes`
+
+# Section 6: determining ROI in sequence of digits 

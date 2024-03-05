@@ -71,7 +71,7 @@ class MNIST_Sequence():
         digits_with_noise = []
 
         for digit, (l_bound, r_bound) in zip(sequence, bounds):
-            canvas = np.zeros((canvas_h, canvas_w), dtype=np.float32)
+            canvas = np.ones((canvas_h, canvas_w), dtype=np.float32)
 
             # random vertical pos
             y_pos = random.randint(0, 10)
@@ -111,10 +111,15 @@ class MNIST_Sequence():
 
         return np.array(dataset), np.array(labels)
 
+def show_image(image):
+    plt.imshow(image, cmap='gray')
+    plt.axis('off')
+    plt.show()
+
 def main():
     m = MNIST_Sequence()
-    train_dataset, train_labels = m.generate_database(n=100)
-    test_dataset, test_labels = m.generate_database(n=100)
+    train_dataset, train_labels = m.generate_database(n=10000)
+    test_dataset, test_labels = m.generate_database(n=5000)
 
     output_folder = "../../MNIST_SEQUENCE"
 
@@ -126,7 +131,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-# def show_image(image):
-#     plt.imshow(image, cmap='gray')
-#     plt.axis('off')
-#     plt.show()
