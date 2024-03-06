@@ -122,11 +122,11 @@ No hyperparameter optimization is done yet, save that for later as a treat
 
 `This is output of digits stacked with no positional noise`
 
-![alt text](/src/number_string/test_output/uniform_num.png)
+![alt text](/src/2_digit_sequence/test_output/uniform_num.png)
 
 `This is output of digits stacked with positional noise. Mind the overlap`
 
-![alt text](/src/number_string/test_output/num_sequence.png)
+![alt text](/src/2_digit_sequence//test_output/num_sequence.png)
 
 `Will Make a new dataset to use for future OCR purposes`
 
