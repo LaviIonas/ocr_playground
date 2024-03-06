@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 FILE_DIR = ""
 FILE_NAME = "AllWood_2006-2022.csv"
@@ -21,7 +20,6 @@ def process_data(df):
     # Organize data
     return df[['Item', 'Area', 'Year', 'Value']].groupby(['Item', 'Area', 'Year']).sum().reset_index()
 
-# 
 def generate_inflow_carbon_values(data, area, item, parameter_dict):
     # Isolate Item Data
     filtered_data = data.loc[(data['Area'] == area) & (data['Item'] == item)].copy()
@@ -35,7 +33,6 @@ def generate_inflow_carbon_values(data, area, item, parameter_dict):
     # Assign the updated values back to the original DataFrame
     data.loc[(data['Area'] == area) & (data['Item'] == item), 'InflowC'] = filtered_data['InflowC'].values
 
-# 
 def get_mult(item, parameter_dict):
     mult_values = parameter_dict.get(item, {}).get('mult', {}).values()
     div_values = parameter_dict.get(item, {}).get('div', {}).values()
@@ -55,7 +52,6 @@ def get_mult(item, parameter_dict):
     
     return result
 
-# 
 def calculate_first_order_decay_variables(data, area, item, parameter_dict):
      # Isolate Item Data
     filtered_data = data.loc[(data['Area'] == area) & (data['Item'] == item)].copy()
@@ -66,11 +62,9 @@ def calculate_first_order_decay_variables(data, area, item, parameter_dict):
 
     return k, inflow_t, c_t
 
-# 
 def calculate_first_order_decay(k, inflow, c):
     return np.exp(-1*k)*c + ((1-np.exp(-1*k))/k)*inflow
 
-# 
 def calculate_anual_first_order_decay(data, area, item, parameter_dict):
     # Isolate Item Data
     filtered_data = data.loc[(data['Area'] == area) & (data['Item'] == item)].copy()
@@ -123,20 +117,39 @@ def main():
                 'dry-weight': 1.0
             },
             'half-life': 2
+        },
+        'Roundwood': {
+            'mult' : {
+                'c_fraction': 0.1
+            },
+            'div' : {
+                'dry-weight': 1.0
+            },
+            'half-life': 100
+        },
+        'Wood fuel': {
+            'mult' : {
+                'c_fraction': 0.1
+            },
+            'div' : {
+                'dry-weight': 1.0
+            },
+            'half-life': 100
         }
     }
 
     path = FILE_DIR + FILE_NAME
     data = load_data(path)
 
-    area, item = ('Finland', "Paper and paperboard")
+    unique_country = data['Area'].unique()
+    unique_items = ['Paper and paperboard', 'Roundwood', 
+                    'Sawnwood', 'Wood fuel', 'Wood-based panels']
 
-    generate_inflow_carbon_values(data, area, item, parameter_dict)
-
-    c_t_arr = calculate_anual_first_order_decay(data, area, item, parameter_dict)
-
-    print(c_t_arr)
-
+    for country in unique_country:
+        for item in unique_items:
+            generate_inflow_carbon_values(data, country, item, parameter_dict)
+            c_t_arr = calculate_anual_first_order_decay(data, country, item, parameter_dict)
+            print(c_t_arr)
 
 if __name__ == '__main__':
     main()
