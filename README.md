@@ -117,7 +117,7 @@ No hyperparameter optimization is done yet, save that for later as a treat
 ```
 - Take individual digits and slap them together in a row
 - Take that row of digits and place them on a new larger canvas chaotically
-- Output a new type of data for future ROI analysis 
+- Output a new (n, 28, 190) type of data for future ROI analysis 
 ```
 
 `This is output of digits stacked with no positional noise`
@@ -131,3 +131,23 @@ No hyperparameter optimization is done yet, save that for later as a treat
 `Will Make a new dataset to use for future OCR purposes`
 
 # Section 6: determining ROI in sequence of digits 
+
+## Workflow
+```
+- Take idx data and approximate bounding boxes around digits
+- Crop the digit inside the bounding box and resize for 28x28
+- Export list of images for predictor
+```
+`First Attempt, not catching some of the regions`
+
+![alt text](/src/3_regions_of_interest/test_output/roi.png)
+
+`Doing better, catching all the digits (and more XDD)`
+
+![alt text](/src/3_regions_of_interest/test_output/roi1.png)
+
+`Cropping the digits and trying to make 28x28 images out of them, terrible so far`
+
+![alt text](/src/3_regions_of_interest/test_output/resize_fail.png)
+
+`I will have to tweak the slicing calculations to make them properly aligned in the middle`

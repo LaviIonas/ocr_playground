@@ -31,16 +31,30 @@ def define_roi(image_array):
 
     return bounding_boxes
 
-def resize_and_center_digit(image_array, bounding_boxes):
+def resize_and_center_digit(image_array, bounding_boxes, margin=5):
     resized_digits = []
 
     for img, bbox_list in zip(image_array, bounding_boxes):
         img_uint8 = np.uint8(img * 255)
 
-        for x,y,w,h in bbox_list:
+        for x, y, w, h in bbox_list:
+            # Add margin to the bounding box
+            x -= margin
+            y -= margin
+            w += 2 * margin
+            h += 2 * margin
+            
+            # Ensure that the modified bounding box is within the image boundaries
+            x = max(0, x)
+            y = max(0, y)
+            w = min(w, img_uint8.shape[1] - x)
+            h = min(h, img_uint8.shape[0] - y)
+
+            # Extract the digit using the modified bounding box coordinates
             digit = img_uint8[y:y+h, x:x+w]
 
-            resized_digit = cv2.resize(digit, (28,28), interpolation=cv2.INTER_AREA)
+            # Resize the digit to 28x28
+            resized_digit = cv2.resize(digit, (28, 28), interpolation=cv2.INTER_AREA)
 
             # Find the center coordinates of the resized digit
             center_x = (28 - w) // 2
@@ -58,7 +72,7 @@ def resize_and_center_digit(image_array, bounding_boxes):
             # Place the resized digit on the canvas
             canvas[start_y:end_y, start_x:end_x] = resized_digit[:end_y-start_y, :end_x-start_x]
 
-
+            # Append the resized digit to the list of resized digits
             resized_digits.append(canvas)
 
     return resized_digits
@@ -79,7 +93,7 @@ def visualize_resized_digits(resized_digits, num_columns=5):
 def main():
     X_train, y_train, y_test, X_test = get_digit_data()
 
-    bounding_boxes = define_roi(X_train[:1])
+    bounding_boxes = define_roi(X_train[2:3])
     resized_digits = resize_and_center_digit(X_train[:1], bounding_boxes)
 
     visualize_resized_digits(resized_digits)
