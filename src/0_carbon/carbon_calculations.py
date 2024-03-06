@@ -151,5 +151,16 @@ def main():
             c_t_arr = calculate_anual_first_order_decay(data, country, item, parameter_dict)
             print(c_t_arr)
 
+    """
+    # If you wanna see if the values are right:
+
+    items = ['Paper and paperboard', 'Sawnwood', 'Wood-based panels']
+    area, item = ('Finland', items[1])
+    generate_inflow_carbon_values(data, area, item, parameter_dict)
+    c_t_arr = calculate_anual_first_order_decay(data, area, item, parameter_dict)
+    print(c_t_arr)
+
+    """
+
 if __name__ == '__main__':
     main()
