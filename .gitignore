@@ -4,3 +4,7 @@ MNIST_SEQUENCE/test-images.idx
 MNIST_SEQUENCE/test-labels.idx
 MNIST_SEQUENCE/train-images.idx
 MNIST_SEQUENCE/train-labels.idx
+MNIST_SEQUENCE/test-images.idx
+MNIST_SEQUENCE/test-labels.idx
+MNIST_SEQUENCE/train-images.idx
+MNIST_SEQUENCE/train-labels.idx
