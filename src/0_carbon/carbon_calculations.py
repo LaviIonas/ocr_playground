@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import netCDF4 as cdf
-# import xarray as xr
 
 FILE_DIR = ""
 FILE_NAME = "AllWood_2006-2022.csv"
@@ -23,83 +21,122 @@ def process_data(df):
     # Organize data
     return df[['Item', 'Area', 'Year', 'Value']].groupby(['Item', 'Area', 'Year']).sum().reset_index()
 
-# Function that gets the data slice for a specific country
-def get_country_data(data, area, item):
-    country_data = data[data["Area"] == area]
-    return country_data
+# 
+def generate_inflow_carbon_values(data, area, item, parameter_dict):
+    # Isolate Item Data
+    filtered_data = data.loc[(data['Area'] == area) & (data['Item'] == item)].copy()
+
+    # Product of multipliers for each item
+    multiplier = get_mult(item, parameter_dict)
+    
+    # Alter Value
+    filtered_data['InflowC'] = filtered_data['Value'] * multiplier
+
+    # Assign the updated values back to the original DataFrame
+    data.loc[(data['Area'] == area) & (data['Item'] == item), 'InflowC'] = filtered_data['InflowC'].values
 
 # 
-def define_inflow_carbon(data, area, item, parameter_dict):
-    items = country_data[country_data['Item'] == item]
+def get_mult(item, parameter_dict):
+    mult_values = parameter_dict.get(item, {}).get('mult', {}).values()
+    div_values = parameter_dict.get(item, {}).get('div', {}).values()
+    
+    # Calculate the product of values in the 'mult' dictionary
+    product = 1
+    for value in mult_values:
+        product *= value
+    
+    # Calculate the product of values in the 'div' dictionary
+    divisor = 1
+    for value in div_values:
+        divisor *= value
+    
+    # Perform the division
+    result = product / divisor
+    
+    return result
 
-    multiplier = get_multiplier(item, parameter_dict)
-    for value in items['Value']:
-        items['InflowC'] = value / 410.0 * multiplier
+# 
+def calculate_first_order_decay_variables(data, area, item, parameter_dict):
+     # Isolate Item Data
+    filtered_data = data.loc[(data['Area'] == area) & (data['Item'] == item)].copy()
 
-    print(items)
+    k = np.log(2) / parameter_dict.get(item, {}).get('half-life')
+    inflow_t = filtered_data['InflowC'].mean()
+    c_t = inflow_t / k
 
-    # carbon_fraction = data[(data['Area'] == area) & (data['Item'] == item)]
-    # carbon_fraction['Inflow_c'] = carbon_fraction['Value']/410*0.5
+    return k, inflow_t, c_t
 
-    # return carbon_fraction['Inflow_c']
+# 
+def calculate_first_order_decay(k, inflow, c):
+    return np.exp(-1*k)*c + ((1-np.exp(-1*k))/k)*inflow
 
-# def calcualte_decay_per_year(data, half_life, area, item):
-#     k = np.log(2)/half_life 
-#     inflow_t0 = generate_carbon_fraction(data, area, item).mean() 
-#     c_t0 = inflow_t0 / k 
+# 
+def calculate_anual_first_order_decay(data, area, item, parameter_dict):
+    # Isolate Item Data
+    filtered_data = data.loc[(data['Area'] == area) & (data['Item'] == item)].copy()
 
-#     first_order_decay = first_order_decay_sw(k=k, inflow=inflow_t0, c_t=c_t0)
+    k, inflow_t0, c_t0 = calculate_first_order_decay_variables(data, area, item, parameter_dict)
 
-#     return first_order_decay
+    inflow_t = inflow_t0
+    c_t = c_t0
 
+    c_t_array = []
 
-# def generate_decay_array(data, half_life, area, item):
-#     decay_array = []
+    for year in filtered_data['Year']:
+        c_t = calculate_first_order_decay(k, inflow_t, c_t)
 
-#     inflow_t0 = generate_carbon_fraction(data, area, item).mean() 
-#     print(inflow_t0)
-    # c_t0 = inflow_t0 / k     
+        # Watch out if a year has multiple inflowC values, because only the first is being selected
+        inflow_t = filtered_data.loc[filtered_data['Year'] == year, "InflowC"].values[0]
 
-    # c_t = c_t0
-    # inflow_c_t = inflow_t0
+        c_t_array.append(c_t)
 
-    # for year in nt_finland_sw['Year']:
-    #     c_t = first_order_decay_sw(k=k,Inflow = inflow_c_t, c_t = c_t)
-    #     inflow_c_t = nt_finland_sw[nt_finland_sw['Year']==year]["Inflow_c"].values
-
-    #     print(c_t)
-
-
-# def first_order_decay_sw(k , inflow_t0, c_t0): 
-#     return np.exp(-1*k)*c_i + ((1-np.exp(-1*k))/k)*inflow
-
-def get_multiplier(item, parameter_dict):
-    parameters = parameter_dict.get(item, {}).values()
-    multiplier = 1
-    for value in parameters:
-        multiplier *= value
-
-    return multiplier
+    return c_t_array
 
 def main():
 
     parameter_dict = {
         'Sawnwood': {
-            'c_fraction': 0.5
-        } 
+            'mult' : {
+                'c_fraction': 0.5
+            },
+            'div' : {
+                'dry-weight': 410.0
+            },
+            'half-life': 35
+        },
+        'Wood-based panels': {
+            'mult' : {
+                'c_fraction': 0.454
+            },
+            'div' : {
+                'dry-weight': 410.0
+            },
+            'half-life': 25,
+            'density': 0.595
+        },
+        'Paper and paperboard': {
+            'mult' : {
+                'c_fraction': 0.429,
+                'relative_dry_mass': 0.9
+            },
+            'div' : {
+                'dry-weight': 1.0
+            },
+            'half-life': 2
+        }
     }
 
     path = FILE_DIR + FILE_NAME
     data = load_data(path)
 
-    c = get_country_data()
-    define_inflow_carbon(data, 'Finland', "Sawnwood", parameter_dict)
+    area, item = ('Finland', "Paper and paperboard")
 
-    # print(nt_df[:5])
+    generate_inflow_carbon_values(data, area, item, parameter_dict)
 
-    # generate_decay_array(nt_df, 35, 'Finland', "Sawnwood")
+    c_t_arr = calculate_anual_first_order_decay(data, area, item, parameter_dict)
 
-    # print(nt_df)
+    print(c_t_arr)
+
 
 if __name__ == '__main__':
     main()
