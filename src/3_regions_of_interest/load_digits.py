@@ -5,13 +5,13 @@ def get_digit_data():
 
     path = "../../MNIST_SEQUENCE/"
 
-    X_train = idx2numpy.convert_from_file(os.path.join(path, "XXXtrain-images.idx"))
-    y_train = idx2numpy.convert_from_file(os.path.join(path, "XXXtrain-labels.idx"))
+    X_train_arr = idx2numpy.convert_from_file(os.path.join(path, "XXXtrain-images.idx"))
+    y_train_arr = idx2numpy.convert_from_file(os.path.join(path, "XXXtrain-labels.idx"))
 
-    X_test = idx2numpy.convert_from_file(os.path.join(path, "XXXtest-images.idx"))
-    y_test = idx2numpy.convert_from_file(os.path.join(path, "XXXtest-labels.idx"))
+    X_test_arr = idx2numpy.convert_from_file(os.path.join(path, "XXXtest-images.idx"))
+    y_test_arr = idx2numpy.convert_from_file(os.path.join(path, "XXXtest-labels.idx"))
 
-    return X_train, y_train, y_test, X_test
+    return X_train_arr, y_train_arr, X_test_arr, y_test_arr
 
 # def main():
 #     X_train, y_train, y_test, X_test = get_digit_data()

@@ -64,38 +64,30 @@ def resize_digits(image_array, bounding_boxes, margin=5):
 
     return resized_digits
 
-def invert_digits(digit_array):
-    inverted_digits = []
-    for digit in digit_array:
-        # Subtract each pixel value from the maximum pixel value to invert colors
-        inverted_digit = 255 - digit
-        inverted_digits.append(inverted_digit)
-    return np.array(inverted_digits) 
+# def visualize_resized_digits(resized_digits, num_columns=5):
+#     num_digits = len(resized_digits)
+#     num_rows = (num_digits + num_columns - 1) // num_columns
 
-def visualize_resized_digits(resized_digits, num_columns=5):
-    num_digits = len(resized_digits)
-    num_rows = (num_digits + num_columns - 1) // num_columns
+#     plt.figure(figsize=(10, 2 * num_rows))
 
-    plt.figure(figsize=(10, 2 * num_rows))
+#     for i in range(num_digits):
+#         plt.subplot(num_rows, num_columns, i + 1)
+#         plt.imshow(resized_digits[i], cmap='gray')
+#         plt.axis('off')
 
-    for i in range(num_digits):
-        plt.subplot(num_rows, num_columns, i + 1)
-        plt.imshow(resized_digits[i], cmap='gray')
-        plt.axis('off')
-
-    plt.show()
+#     plt.show()
 
 # def main():
-#     X_train, y_train, y_test, X_test = get_digit_data()
+#     X_train, y_train, X_test, y_test = get_digit_data()
 
-#     ei = X_train[:3]
+    # ei = X_train[:3]
 
-#     bounding_boxes = define_roi(ei)
-#     resized_digits = resize_digits(ei, bounding_boxes, 3)
+    # bounding_boxes = define_roi(ei)
+    # resized_digits = resize_digits(ei, bounding_boxes, 3)
 
-#     print(np.array(resized_digits).shape)
+    # print(np.array(resized_digits).shape)
 
-#     visualize_resized_digits(resized_digits)
+    # visualize_resized_digits(resized_digits)
 
 # if __name__ == '__main__':
 #     main()
