@@ -31,7 +31,7 @@ def define_roi(image_array):
 
     return bounding_boxes
 
-def resize_and_center_digit(image_array, bounding_boxes, margin=5):
+def resize_digits(image_array, bounding_boxes, margin=5):
     resized_digits = []
 
     for img, bbox_list in zip(image_array, bounding_boxes):
@@ -56,26 +56,21 @@ def resize_and_center_digit(image_array, bounding_boxes, margin=5):
             # Resize the digit to 28x28
             resized_digit = cv2.resize(digit, (28, 28), interpolation=cv2.INTER_AREA)
 
-            # Find the center coordinates of the resized digit
-            center_x = (28 - w) // 2
-            center_y = (28 - h) // 2
-
-            # Calculate the coordinates to place the resized digit in the center of the canvas
-            start_x = max(0, center_x)
-            end_x = min(28, center_x + w)
-            start_y = max(0, center_y)
-            end_y = min(28, center_y + h)
-
-            # Create a black canvas (28x28) to place the resized digit
-            canvas = np.zeros((28, 28), dtype=np.uint8)
-
-            # Place the resized digit on the canvas
-            canvas[start_y:end_y, start_x:end_x] = resized_digit[:end_y-start_y, :end_x-start_x]
+            # Invert the colors of the resized digit
+            inverted_digit = cv2.bitwise_not(resized_digit)
 
             # Append the resized digit to the list of resized digits
-            resized_digits.append(canvas)
+            resized_digits.append(inverted_digit)
 
     return resized_digits
+
+def invert_digits(digit_array):
+    inverted_digits = []
+    for digit in digit_array:
+        # Subtract each pixel value from the maximum pixel value to invert colors
+        inverted_digit = 255 - digit
+        inverted_digits.append(inverted_digit)
+    return np.array(inverted_digits) 
 
 def visualize_resized_digits(resized_digits, num_columns=5):
     num_digits = len(resized_digits)
@@ -93,16 +88,14 @@ def visualize_resized_digits(resized_digits, num_columns=5):
 def main():
     X_train, y_train, y_test, X_test = get_digit_data()
 
-    bounding_boxes = define_roi(X_train[2:3])
-    resized_digits = resize_and_center_digit(X_train[:1], bounding_boxes)
+    ei = X_train[:3]
+
+    bounding_boxes = define_roi(ei)
+    resized_digits = resize_digits(ei, bounding_boxes, 3)
+
+    print(np.array(resized_digits).shape)
 
     visualize_resized_digits(resized_digits)
-
-    # for img in imgs:
-    #     cv2.imshow("Bounding Boxes", img)
-    #     cv2.waitKey(5000)
-
-    # cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     main()
