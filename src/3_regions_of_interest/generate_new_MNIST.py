@@ -9,17 +9,12 @@ DATA_DIR = "../../MNIST_RECYCLED"
 def generate_dataset():
     X_train_arr, y_train_arr, X_test_arr, y_test_arr = get_digit_data()
 
-    bbox_train = define_roi(X_train_arr)
-    bbox_test = define_roi(X_test_arr)
-
     margin_value = 3
 
-    X_train = resize_digits(X_train_arr, bbox_train, margin_value)
-    X_test = resize_digits(X_test_arr, bbox_test, margin_value)
+    X_train, y_train = resize_digits(X_train_arr, y_train_arr, margin_value)
+    X_test, y_test = resize_digits(X_test_arr, y_test_arr, margin_value)
 
-    print(np.array(X_train).shape, np.array(X_test).shape)
-
-    return X_train, y_train_arr, X_test, y_test_arr
+    return X_train, y_train, X_test, y_test
 
 def export_dataset():
     X_train, y_train, X_test, y_test = generate_dataset()
@@ -35,8 +30,7 @@ def export_dataset():
     print("Data Exported.")
 
 def main():
-    generate_dataset()
-    # export_dataset()
+    export_dataset()
 
 if __name__ == '__main__':
     main()

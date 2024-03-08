@@ -37,12 +37,10 @@ def define_roi(image_array):
 
 def resize_digits(image_array, labels, margin=5):
     bounding_boxes, faulty_bbox = define_roi(image_array)
-    
-    print(labels)
 
     for idx in faulty_bbox:
         image_array = np.delete(image_array, idx, axis=0)
-        del labels[idx]
+        labels = np.delete(labels, idx, axis=0)
 
     resized_digits = []
 
@@ -76,7 +74,9 @@ def resize_digits(image_array, labels, margin=5):
             # Append the resized digit to the list of resized digits
             resized_digits.append(inverted_digit)
 
-    return resized_digits
+    return resized_digits, labels
+
+# TODO write a function that visualizes the faulty images to figure out the issue
 
 # def visualize_resized_digits(resized_digits, num_columns=5):
 #     num_digits = len(resized_digits)

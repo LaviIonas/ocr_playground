@@ -151,3 +151,9 @@ No hyperparameter optimization is done yet, save that for later as a treat
 ![alt text](/src/3_regions_of_interest/test_output/resize_fail.png)
 
 `I will have to tweak the slicing calculations to make them properly aligned in the middle`
+
+# TODO
+
+```
+- Write a function to visualized failed boundary boxes, and fix it
+```
