@@ -162,7 +162,15 @@ No hyperparameter optimization is done yet, save that for later as a treat
 
 `Invert numbers and export them as .npy files`
 
-# Section 7: predict recycled digit values based on trained digit models
+
+# Section 7: create a modular library for my models for ease of use (lobus_models)
+
+## Workflow
+```
+- Take existing models and turn them into classes that can be called and saved later
+```
+
+# Section 8: predict recycled digit values based on trained digit models
 
 
 
