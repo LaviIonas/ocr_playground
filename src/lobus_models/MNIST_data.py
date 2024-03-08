@@ -1,7 +1,8 @@
 from helper import bytes_to_int
+import numpy as np
 
 # directory shortcuts
-DATA_DIR = '../MNIST_DATA/'
+DATA_DIR = '../../MNIST_DATA'
 TEST_DIR = 'temp/'
 TEST_DATA_FILENAME = DATA_DIR + '/t10k-images-idx3-ubyte/t10k-images-idx3-ubyte'
 TEST_LABELS_FILENAME = DATA_DIR + '/t10k-labels-idx1-ubyte/t10k-labels-idx1-ubyte'
