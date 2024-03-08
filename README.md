@@ -152,6 +152,27 @@ No hyperparameter optimization is done yet, save that for later as a treat
 
 `I will have to tweak the slicing calculations to make them properly aligned in the middle`
 
+![alt text](/src/3_regions_of_interest/test_output/roi_extract.png)
+
+`We were able to generate MOST of the dataset into individual numbers`
+
+`Current successful bbox rate is around 497/500 => 99.4%`
+
+![alt text](/src/3_regions_of_interest/test_output/resized_digits_inv.png)
+
+`Invert numbers and export them as .npy files`
+
+# Section 7: predict recycled digit values based on trained digit models
+
+
+
+
+
+
+
+
+
+
 # TODO
 
 ```
