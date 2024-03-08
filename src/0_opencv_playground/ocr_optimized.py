@@ -136,7 +136,7 @@ def weighted_knn(X_train, y_train, X_test, k):
 
         y_pred.append(pred_label)
 
-    return y_pred
+    return y_pred, X_train, y_train, k
 
 # Radius Based KNN
 def rad_knn(X_train, y_train, X_test, rad=0.5):
@@ -183,12 +183,19 @@ def kd_tree_knn(X_train, y_train, X_test, k):
 
     return y_pred
 
-def main():
-    n_max = 60000
+def generate_data(n_max, t_max):
     X_train = read_images(TRAIN_DATA_FILENAME, n_max) 
     y_train = read_labels(TRAIN_LABELS_FILENAME, n_max) 
-    X_test = read_images(TEST_DATA_FILENAME, 400)
-    y_test = read_labels(TEST_LABELS_FILENAME, 400)
+    X_test = read_images(TEST_DATA_FILENAME, t_max)
+    y_test = read_labels(TEST_LABELS_FILENAME, t_max)
+
+    return X_train,  y_train, X_test, y_test
+
+def main():
+    n_max = 10000
+    t_max = 400
+    
+    X_train,  y_train, X_test, y_test = generate_data(n_max, t_max)
 
     """
     Feature Extraction

@@ -29,8 +29,8 @@ def export_dataset():
 
     print("Data Exported.")
 
-def main():
-    export_dataset()
+# def main():
+#     export_dataset()
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

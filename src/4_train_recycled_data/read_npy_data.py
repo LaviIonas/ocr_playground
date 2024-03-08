@@ -5,7 +5,7 @@ DATA_DIR = "../../MNIST_RECYCLED"
 
 def read_npy_files(data_dir):
     # Initialize empty dictionaries to store arrays
-    arrays = {}
+    data = {}
 
     # List all files in the directory
     files = os.listdir(data_dir)
@@ -18,14 +18,18 @@ def read_npy_files(data_dir):
             array_name = f.split('.')[0]
             array = np.load(os.path.join(data_dir, f))
             # Store the array in the dictionary
-            arrays[array_name] = array
+            data[array_name] = array
 
-    return arrays
+    return data
 
-def main():
+# def main():
     
-    data = read_npy_files(DATA_DIR)
-    print(data['X_train'].shape)
+#     data = read_npy_files(DATA_DIR)
+#     print(data['X_train'].shape)
+#     print(data['y_train'].shape)
+#     print(data['X_test'].shape)
+#     print(data['y_test'].shape)
 
-if __name__ == '__main__':
-    main()
+
+# if __name__ == '__main__':
+#     main()
