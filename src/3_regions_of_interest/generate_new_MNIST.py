@@ -17,6 +17,8 @@ def generate_dataset():
     X_train = resize_digits(X_train_arr, bbox_train, margin_value)
     X_test = resize_digits(X_test_arr, bbox_test, margin_value)
 
+    print(np.array(X_train).shape, np.array(X_test).shape)
+
     return X_train, y_train_arr, X_test, y_test_arr
 
 def export_dataset():
@@ -33,8 +35,8 @@ def export_dataset():
     print("Data Exported.")
 
 def main():
-    
-    export_dataset()
+    generate_dataset()
+    # export_dataset()
 
 if __name__ == '__main__':
     main()

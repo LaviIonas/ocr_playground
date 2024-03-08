@@ -7,8 +7,9 @@ from load_digits import get_digit_data
 def define_roi(image_array):
 
     bounding_boxes = []
+    faulty_bbox = []
 
-    for img in image_array:
+    for i, img in enumerate(image_array):
 
         img_uint8 = np.uint8(img * 255)
 
@@ -22,20 +23,33 @@ def define_roi(image_array):
             boundRect = cv2.boundingRect(c)
             x, y, w, h = boundRect
             area = w * h
-            min_area = 50
+            min_area = 40
             
             if area > min_area:
                 bounding_boxes_per_image.append((x, y, w, h))
    
-        bounding_boxes.append(bounding_boxes_per_image)
+        if len(bounding_boxes_per_image) == 5:
+            bounding_boxes.append(bounding_boxes_per_image)
+        else:
+            faulty_bbox.append(i)
 
-    return bounding_boxes
+    return bounding_boxes, faulty_bbox
 
-def resize_digits(image_array, bounding_boxes, margin=5):
+def resize_digits(image_array, labels, margin=5):
+    bounding_boxes, faulty_bbox = define_roi(image_array)
+    
+    print(labels)
+
+    for idx in faulty_bbox:
+        image_array = np.delete(image_array, idx, axis=0)
+        del labels[idx]
+
     resized_digits = []
 
     for img, bbox_list in zip(image_array, bounding_boxes):
         img_uint8 = np.uint8(img * 255)
+
+        faulty_digits = []
 
         for x, y, w, h in bbox_list:
             # Add margin to the bounding box
@@ -80,14 +94,12 @@ def resize_digits(image_array, bounding_boxes, margin=5):
 # def main():
 #     X_train, y_train, X_test, y_test = get_digit_data()
 
-    # ei = X_train[:3]
+#     ei = X_train[:3]
+#     l = y_train[:3]
 
-    # bounding_boxes = define_roi(ei)
-    # resized_digits = resize_digits(ei, bounding_boxes, 3)
+#     resized_digits = resize_digits(ei, l, 3)
 
-    # print(np.array(resized_digits).shape)
-
-    # visualize_resized_digits(resized_digits)
+#     visualize_resized_digits(resized_digits)
 
 # if __name__ == '__main__':
 #     main()
