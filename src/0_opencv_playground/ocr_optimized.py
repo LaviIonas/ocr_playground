@@ -7,7 +7,7 @@ from sklearn.neighbors import KernelDensity, NearestNeighbors
 from sklearn.metrics.pairwise import pairwise_kernels
 
 # directory shortcuts
-DATA_DIR = '../MNIST_DATA/'
+DATA_DIR = '../../MNIST_DATA'
 TEST_DIR = 'temp/'
 TEST_DATA_FILENAME = DATA_DIR + '/t10k-images-idx3-ubyte/t10k-images-idx3-ubyte'
 TEST_LABELS_FILENAME = DATA_DIR + '/t10k-labels-idx1-ubyte/t10k-labels-idx1-ubyte'
@@ -216,7 +216,7 @@ def main():
     KNN
     """
     # Basic KNN
-    # y_pred = basic_knn(X_train, y_train, X_test, 3)
+    y_pred = basic_knn(X_train, y_train, X_test, 3)
 
     # Weighted KNN
     # y_pred = weighted_knn(X_train, y_train, X_test, 3)
@@ -225,7 +225,7 @@ def main():
     # y_pred = rad_knn(X_train, y_train, X_test, 0.5)
 
     # KDTree KNN
-    y_pred = kd_tree_knn(X_train, y_train, X_test, 5)
+    # y_pred = kd_tree_knn(X_train, y_train, X_test, 5)
 
     print(calculate_accuracy(y_test, y_pred))
 
