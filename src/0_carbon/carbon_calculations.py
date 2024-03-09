@@ -93,12 +93,48 @@ def calculate_anual_first_order_decay(data, area, item, parameter_dict):
 
 def generate_output_cvs(file_name, data, columns):
     selected_data = data[columns]
+
+    selected_data["c_t"] = {}
+    selected_data["delta_c_t"] = {}
+
     filepath = os.path.join(FILE_DIR, file_name)
     selected_data.to_csv(filepath, index=False)
 
 def read_output_csv(file_name):
-    df = pd.read_csv(filename)
+    df = pd.read_csv(file_name)
     return df
+
+def calculate_deltas(c_t):
+    delta_array = []
+    for i in range(len(c_t)):
+        if i < (len(c_t)-1):
+            val1 = c_t[i]
+            val2 = c_t[i+1]
+
+            delta = val2 - val1
+            delta_array.append(delta)
+        else:
+            # VALUE OF 2007 !!!
+            delta_array.append(c_t[i])
+
+    return delta_array
+
+def update_csv_from_dataframe(filename, dataframe):
+    dataframe.to_csv(filename, index=False)
+
+def generate_calculations(data, output, unique_country, unique_items, parameter_dict):
+     for country in unique_country:
+        for item in unique_items:
+            generate_inflow_carbon_values(data, country, item, parameter_dict)
+            c_t = calculate_anual_first_order_decay(data, country, item, parameter_dict)
+            
+            reversed_c_t = c_t[::-1]
+
+            delta = calculate_deltas(c_t)
+            reversed_delta = delta[::-1]
+
+            output.loc[(output['Area'] == country) & (output['Item'] == item), 'c_t'] = reversed_c_t
+            output.loc[(output['Area'] == country) & (output['Item'] == item), 'delta_c_t'] = reversed_delta
 
 def main():
 
@@ -155,54 +191,23 @@ def main():
     path = FILE_DIR + FILE_NAME
     data = load_data(path)
 
-    output = read_output_csv()
+    unique_country = data['Area'].unique()
+    unique_items = ['Paper and paperboard', 'Roundwood', 
+                    'Sawnwood', 'Wood fuel', 'Wood-based panels']
 
-    # unique_country = data['Area'].unique()
-    # unique_items = ['Paper and paperboard', 'Roundwood', 
-                    # 'Sawnwood', 'Wood fuel', 'Wood-based panels']
-
+    # Generate CSV
     # columns = ["Area", "Item", "Year"]
     # generate_output_cvs("calculations_2006-2022.csv", data, columns)
 
-    # c_t_arr = []
+    output = read_output_csv(FILE_DIR + FILE_NAME_OUTPUT)
 
-
-    # for country in unique_country:
-    #     for item in unique_items:
-    #         generate_inflow_carbon_values(data, country, item, parameter_dict)
-    #         c_t = calculate_anual_first_order_decay(data, country, item, parameter_dict)
-    #         c_t_arr.append(c_t)
-
-
-    # delta_array = []
-    # for i in range(len(new_arr)-1):
-    #     val1 = new_arr[i]
-    #     val2 = new_arr[i+1]
-
-    #     delta = val2 - val1
-    #     delta_array.append(delta)
-    
-
-    # temp = np.array(new_arr)
-    # x = temp[::-1]
-    # y = []
-
-    # for i in range(len(new_arr)):
-    #     y.append(i)
-
-    # plt.plot(y, x)
-    # plt.show()
-
-    """
-    # If you wanna see if the values are right:
-
-    items = ['Paper and paperboard', 'Sawnwood', 'Wood-based panels']
-    area, item = ('Finland', items[1])
-    generate_inflow_carbon_values(data, area, item, parameter_dict)
-    c_t_arr = calculate_anual_first_order_decay(data, area, item, parameter_dict)
-    print(c_t_arr)
-
-    """
+    # TEEST
+    # a = generate_inflow_carbon_values(data, area, item, parameter_dict)
+    # generate_calculations(data, output, unique_country, unique_items, parameter_dict)
+  
+    update_csv_from_dataframe(FILE_DIR + FILE_NAME_OUTPUT, output)
+    output = read_output_csv(FILE_DIR + FILE_NAME_OUTPUT)
+    print(output)
 
 if __name__ == '__main__':
     main()
