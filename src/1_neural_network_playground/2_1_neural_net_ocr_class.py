@@ -62,6 +62,8 @@ class Linear():
         return self.output
 
     def backward(self, nextgrad):
+        print(self.X.T.shape)
+        print(nextgrad.shape)
         self.gradW = np.dot(self.X.T, nextgrad)
         self.gradB = np.sum(nextgrad, axis=0)
         self.gradInput = np.dot(nextgrad, self.W.T)
