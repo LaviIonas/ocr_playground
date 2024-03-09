@@ -195,7 +195,7 @@ def main():
     unique_items = ['Paper and paperboard', 'Roundwood', 
                     'Sawnwood', 'Wood fuel', 'Wood-based panels']
 
-    # Generate CSV
+    # Generate CSV 
     # columns = ["Area", "Item", "Year"]
     # generate_output_cvs("calculations_2006-2022.csv", data, columns)
 
