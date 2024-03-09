@@ -1,8 +1,12 @@
 import pandas as pd
 import numpy as np
+import os
 
-FILE_DIR = ""
+import matplotlib.pyplot as plt 
+
+FILE_DIR = "./"
 FILE_NAME = "AllWood_2006-2022.csv"
+FILE_NAME_OUTPUT = "calculations_2006-2022.csv"
 
 # Function that reads CSV file and outputs an array
 def load_data(file_name):
@@ -18,7 +22,8 @@ def process_data(df):
     # Process data
     df.loc[(df['Element']=='Export Quantity'), 'Value']*= -1
     # Organize data
-    return df[['Item', 'Area', 'Year', 'Value']].groupby(['Item', 'Area', 'Year']).sum().reset_index()
+    subset = df[['Item', 'Area', 'Year', 'Value']].groupby(['Item', 'Area', 'Year']).sum().reset_index()
+    return subset
 
 def generate_inflow_carbon_values(data, area, item, parameter_dict):
     # Isolate Item Data
@@ -86,6 +91,15 @@ def calculate_anual_first_order_decay(data, area, item, parameter_dict):
 
     return c_t_array
 
+def generate_output_cvs(file_name, data, columns):
+    selected_data = data[columns]
+    filepath = os.path.join(FILE_DIR, file_name)
+    selected_data.to_csv(filepath, index=False)
+
+def read_output_csv(file_name):
+    df = pd.read_csv(filename)
+    return df
+
 def main():
 
     parameter_dict = {
@@ -141,15 +155,43 @@ def main():
     path = FILE_DIR + FILE_NAME
     data = load_data(path)
 
-    unique_country = data['Area'].unique()
-    unique_items = ['Paper and paperboard', 'Roundwood', 
-                    'Sawnwood', 'Wood fuel', 'Wood-based panels']
+    output = read_output_csv()
 
-    for country in unique_country:
-        for item in unique_items:
-            generate_inflow_carbon_values(data, country, item, parameter_dict)
-            c_t_arr = calculate_anual_first_order_decay(data, country, item, parameter_dict)
-            print(c_t_arr)
+    # unique_country = data['Area'].unique()
+    # unique_items = ['Paper and paperboard', 'Roundwood', 
+                    # 'Sawnwood', 'Wood fuel', 'Wood-based panels']
+
+    # columns = ["Area", "Item", "Year"]
+    # generate_output_cvs("calculations_2006-2022.csv", data, columns)
+
+    # c_t_arr = []
+
+
+    # for country in unique_country:
+    #     for item in unique_items:
+    #         generate_inflow_carbon_values(data, country, item, parameter_dict)
+    #         c_t = calculate_anual_first_order_decay(data, country, item, parameter_dict)
+    #         c_t_arr.append(c_t)
+
+
+    # delta_array = []
+    # for i in range(len(new_arr)-1):
+    #     val1 = new_arr[i]
+    #     val2 = new_arr[i+1]
+
+    #     delta = val2 - val1
+    #     delta_array.append(delta)
+    
+
+    # temp = np.array(new_arr)
+    # x = temp[::-1]
+    # y = []
+
+    # for i in range(len(new_arr)):
+    #     y.append(i)
+
+    # plt.plot(y, x)
+    # plt.show()
 
     """
     # If you wanna see if the values are right:
@@ -164,3 +206,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
