@@ -168,6 +168,10 @@ No hyperparameter optimization is done yet, save that for later as a treat
 ## Workflow
 ```
 - Take existing models and turn them into classes that can be called and saved later
+- Automate data generation and pipeline prediction process
+1. Read data
+2. Train a model
+3. Predict values
 ```
 
 # Section 8: predict recycled digit values based on trained digit models
