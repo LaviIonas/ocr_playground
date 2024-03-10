@@ -4,11 +4,12 @@ import numpy as np
 import math
 
 class NN():
-    def __init__(self, loss_func, layer_config, iteration, learning_rate, minibatch_size, epoch, mu):
+    def __init__(self, X_train, y_train, loss_func, layer_config, iteration, learning_rate, minibatch_size, epoch, mu):
         # Init Data
-        self.data = generate_MNIST_data(1000, 1000)
-        self.X_train = self.process_data()
-        self.y_train = np.array(self.data[1])
+        self.X_train = self.process_data(X_train)
+        self.y_train = y_train
+
+        print(self.X_train.shape)
         print(self.y_train.shape)
 
         # Init Loss Function
@@ -24,6 +25,7 @@ class NN():
         # Init Hyperparameters
         self.iteration = iteration
         self.minibatch_size = minibatch_size
+        self.learning_rate = learning_rate
         self.epoch = epoch
         self.mu = mu
 
@@ -32,8 +34,7 @@ class NN():
         self.layers = []
         self.grads = []
 
-    def process_data(self):
-        X = np.array(self.data[0])
+    def process_data(self, X):
         X = X / 255.0
         return X
 
@@ -168,8 +169,8 @@ class NN():
             # mean_val_loss = sum(val_loss_batch) / float(len(val_loss_batch))
             
             # val_loss_epoch.append(mean_val_loss)
-            print("Loss = {0} | Training Accuracy = {1} | Val Loss = {2} | Val Accuracy = {3}".format(mean_train_loss, train_acc))
-        return net
+            print("Loss = {0} | Training Accuracy = {1}".format(mean_train_loss, train_acc))
+        return self
 
     def check_accuracy(self, y_true, y_pred):
         return np.mean(y_pred == y_true)

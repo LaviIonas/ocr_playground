@@ -62,8 +62,6 @@ class Linear():
         return self.output
 
     def backward(self, nextgrad):
-        print(self.X.T.shape)
-        print(nextgrad.shape)
         self.gradW = np.dot(self.X.T, nextgrad)
         self.gradB = np.sum(nextgrad, axis=0)
         self.gradInput = np.dot(nextgrad, self.W.T)
@@ -171,6 +169,8 @@ def train(net, X_train, y_train, minibatch_size, epoch, learning_rate, mu=0.9, X
     minibatches = minibatch(X_train, y_train, minibatch_size)
     minibatches_val = minibatch(X_val, y_val, minibatch_size)
 
+    return 0
+
     for i in range(epoch):
         loss_batch = []
         val_loss_batch = []
@@ -251,7 +251,12 @@ def main():
     nn.add_layer(ReLU())
     nn.add_layer(Linear(hidden_nodes, output_nodes))
 
-    nn = train(nn, X_train, y_train, minibatch_size=200, epoch=10, learning_rate=learning_rate, X_val=X_test, y_val=y_test)
+    print(X_train.shape)
+    print(X_test.shape)
+    print(y_train.shape)
+    print(y_test.shape)
+
+    # nn = train(nn, X_train, y_train, minibatch_size=200, epoch=10, learning_rate=learning_rate, X_val=X_test, y_val=y_test)
 
 if __name__ == '__main__':
     main()
