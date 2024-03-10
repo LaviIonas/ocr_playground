@@ -98,28 +98,25 @@ class NN():
         return minibatches
 
     def initilize_layers(self):
-        self.add_layer(Linear(self.input_dim, 64))
+        if len(self.layer_config) < 1:
+            raise ValueError("NN must have at least one hidden layer")
+
+        self.add_layer(Linear(self.input_dim, self.layer_config[0]))
         self.add_layer(ReLU())
-        self.add_layer(Linear(64, self.output_nodes))
-        # if len(self.layer_config) < 1:
-        #     raise ValueError("NN must have at least one hidden layer")
 
-        # self.add_layer(Linear(self.input_dim, self.layer_config[0]))
-        # self.add_layer(ReLU())
+        # If there is only one hidden layer, add the last linear layer directly
+        if len(self.layer_config) == 1:
+            self.add_layer(Linear(self.layer_config[0], self.output_nodes))
+        else:
+            # Iterate through the remaining layer_config elements
+            for i in range(1, len(self.layer_config)):
+                # Add a linear layer
+                self.add_layer(Linear(self.layer_config[i - 1], self.layer_config[i]))
+                # Add ReLU activation function after each linear layer
+                self.add_layer(ReLU())
 
-        # # If there is only one hidden layer, add the last linear layer directly
-        # if len(self.layer_config) == 1:
-        #     self.add_layer(Linear(self.layer_config[0], self.output_nodes))
-        # else:
-        #     # Iterate through the remaining layer_config elements
-        #     for i in range(1, len(self.layer_config)):
-        #         # Add a linear layer
-        #         self.add_layer(Linear(self.layer_config[i - 1], self.layer_config[i]))
-        #         # Add ReLU activation function after each linear layer
-        #         self.add_layer(ReLU())
-
-        #     # Add the last linear layer connecting to the output nodes
-        #     self.add_layer(Linear(self.layer_config[-1], self.output_nodes))
+            # Add the last linear layer connecting to the output nodes
+            self.add_layer(Linear(self.layer_config[-1], self.output_nodes))
 
     def train(self):
         # val_loss_epoch = []
