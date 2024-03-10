@@ -8,7 +8,7 @@ def main():
     '''
     Check MNIST Data Import
     '''
-    n = 1000
+    n = 10000
     t = 1000
     x1, y1, x2, y2 = generate_MNIST_data(n, t)
     y1 = np.array(y1)
@@ -29,7 +29,7 @@ def main():
     print(x1.shape)
     print(y1.shape)
 
-    nn = NN(x1, y1, "CrossEntropy", [8], 10, 0.1, 200, 10, 0.9)
+    nn = NN(x1, y1, "CrossEntropy", [32,32], 10, 0.1, 200, 10, 0.9)
     nn.initilize_layers()
     model = nn.train()
 
