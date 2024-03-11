@@ -1,4 +1,4 @@
-from MNIST_data import generate_MNIST_data
+from MNIST_DATA import generate_MNIST_data
 
 import numpy as np
 import math

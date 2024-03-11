@@ -49,4 +49,4 @@ def generate_MNIST_data(n_max, t_max):
     X_test = read_images(TEST_DATA_FILENAME, t)
     y_test = read_labels(TEST_LABELS_FILENAME, t)
 
-    return X_train,  y_train, X_test, y_test
+    return [X_train,  y_train, X_test, y_test]
