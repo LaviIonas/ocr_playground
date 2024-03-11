@@ -1,0 +1,14 @@
+>> open nc file and extract Finland long and lat
+>> Fin = [...] where 1 inside
+>> All inside Fin needs * constant (-5.1.....)
+>> Array [0...1*c...0]
+>> a = sum(1's in Array * influence)
+>> 
+
+
+>> 
+>> We open panda
+>> We look at COUNTRY data
+>> delta of year 2021 
+>> do math on delta
+>> mol of CO2 / area of fin ^2 * 
