@@ -10,8 +10,8 @@ class MNIST_SEQUENCE():
     def __init__(self, n, t):
         self.n = n
         self.dataset = generate_MNIST_data(self.n, t)
-        self.images = self.dataset[0] 
-        self.labels = self.dataset[1]
+        self.X1 = self.dataset[0] 
+        self.y1 = self.dataset[1]
         self.label_map = {label: [] for label in range(10)}
         self.__generate_label_map()
 
