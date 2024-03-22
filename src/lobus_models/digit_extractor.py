@@ -1,4 +1,3 @@
-from MNIST_SEQUENCE_DATA import generate_MNIST_SEQ_data
 
 import cv2
 import numpy as np
@@ -77,8 +76,8 @@ def resize_digits(image_array, labels, margin=5):
 
     return np.array(resized_digits), np.array(labels)
 
-def generate_dataset(MNIST_Sequence, m):
-    X_train_arr, y_train_arr, X_test_arr, y_test_arr = generate_MNIST_SEQ_data()
+def generate_dataset(mnist_seq, m):
+    X_train_arr, y_train_arr, X_test_arr, y_test_arr = mnist_seq.generate_MNIST_SEQ_data()
 
     X_train, y_train = resize_digits(X_train_arr, y_train_arr, m)
     X_test, y_test = resize_digits(X_test_arr, y_test_arr, m)

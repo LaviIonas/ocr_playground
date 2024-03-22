@@ -38,7 +38,7 @@ def main():
     n1 = 11
     t1 = 100
     mnist_seq = MNIST_SEQUENCE(n1, t1)
-    dataset, labels = mnist_seq.generate_MNIST_SEQ_data()
+    # dataset, labels = mnist_seq.generate_MNIST_SEQ_data()
 
     # print(dataset.shape)
     # print(labels.shape)
@@ -47,7 +47,7 @@ def main():
     ROI
     '''
 
-    x1,y1,x2,y2 = generate_dataset(3)
+    x1,y1,x2,y2 = generate_dataset(mnist_seq, 3)
     x1 = np.array(x1)
     # x2 = np.array(x2)
 
