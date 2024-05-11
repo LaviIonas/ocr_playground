@@ -1,18 +1,17 @@
-from load_mnist_digits import MNIST 
+from MNIST_DATA import *
 
 from random import choice
 import random
 import numpy as np
-import matplotlib.pyplot as plt
-from multiprocessing import Pool
-from functools import partial
 import idx2numpy
 import os
 
-class MNIST_Sequence():
-    def __init__(self):
-        self.dataset = MNIST()
-        self.images, self.labels = self.dataset.load()
+class MNIST_SEQUENCE():
+    def __init__(self, n, t):
+        self.n = n
+        self.dataset = generate_MNIST_data(self.n, t)
+        self.X1 = self.dataset[0] 
+        self.y1 = self.dataset[1]
         self.label_map = {label: [] for label in range(10)}
         self.__generate_label_map()
 
@@ -99,38 +98,14 @@ class MNIST_Sequence():
 
         return digits_with_noise
 
-    def generate_database(self, n):
+    def generate_MNIST_SEQ_data(self):
         dataset = []
         labels = []
 
-        for i in range(n):
+        for i in range(self.n):
             sequence = np.random.randint(0,10, size=5)
             sequence_array = self.generate_non_uniform_sequence(seq=sequence)
             dataset.append(sequence_array)
             labels.append(sequence)
 
         return np.array(dataset), np.array(labels)
-
-def show_image(image):
-    plt.imshow(image, cmap='gray')
-    plt.axis('off')
-    plt.show()
-
-def main():
-    m = MNIST_Sequence()
-    train_dataset, train_labels = m.generate_database(n=100)
-    test_dataset, test_labels = m.generate_database(n=100)
-
-    img = train_dataset[0]
-    show_image(img)
-
-    output_folder = "../../MNIST_SEQUENCE"
-
-    # idx2numpy.convert_to_file(os.path.join(output_folder, "train-images.idx"), train_dataset)
-    # idx2numpy.convert_to_file(os.path.join(output_folder, "train-labels.idx"), train_labels.astype(np.uint8))
-    # idx2numpy.convert_to_file(os.path.join(output_folder, "test-images.idx"), test_dataset)
-    # idx2numpy.convert_to_file(os.path.join(output_folder, "test-labels.idx"), test_labels.astype(np.uint8))
-
-if __name__ == '__main__':
-    main()
-

@@ -151,3 +151,42 @@ No hyperparameter optimization is done yet, save that for later as a treat
 ![alt text](/src/3_regions_of_interest/test_output/resize_fail.png)
 
 `I will have to tweak the slicing calculations to make them properly aligned in the middle`
+
+![alt text](/src/3_regions_of_interest/test_output/roi_extract.png)
+
+`We were able to generate MOST of the dataset into individual numbers`
+
+`Current successful bbox rate is around 497/500 => 99.4%`
+
+![alt text](/src/3_regions_of_interest/test_output/resized_digits_inv.png)
+
+`Invert numbers and export them as .npy files`
+
+
+# Section 7: create a modular library for my models for ease of use (lobus_models)
+
+## Workflow
+```
+- Take existing models and turn them into classes that can be called and saved later
+- Automate data generation and pipeline prediction process
+1. Read data
+2. Train a model
+3. Predict values
+```
+
+# Section 8: predict recycled digit values based on trained digit models
+
+
+
+
+
+
+
+
+
+
+# TODO
+
+```
+- Write a function to visualized failed boundary boxes, and fix it
+```

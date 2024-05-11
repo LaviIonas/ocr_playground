@@ -7,7 +7,7 @@ from sklearn.neighbors import KernelDensity, NearestNeighbors
 from sklearn.metrics.pairwise import pairwise_kernels
 
 # directory shortcuts
-DATA_DIR = '../MNIST_DATA/'
+DATA_DIR = '../../MNIST_DATA'
 TEST_DIR = 'temp/'
 TEST_DATA_FILENAME = DATA_DIR + '/t10k-images-idx3-ubyte/t10k-images-idx3-ubyte'
 TEST_LABELS_FILENAME = DATA_DIR + '/t10k-labels-idx1-ubyte/t10k-labels-idx1-ubyte'
@@ -136,7 +136,7 @@ def weighted_knn(X_train, y_train, X_test, k):
 
         y_pred.append(pred_label)
 
-    return y_pred
+    return y_pred, X_train, y_train, k
 
 # Radius Based KNN
 def rad_knn(X_train, y_train, X_test, rad=0.5):
@@ -183,12 +183,19 @@ def kd_tree_knn(X_train, y_train, X_test, k):
 
     return y_pred
 
-def main():
-    n_max = 60000
+def generate_data(n_max, t_max):
     X_train = read_images(TRAIN_DATA_FILENAME, n_max) 
     y_train = read_labels(TRAIN_LABELS_FILENAME, n_max) 
-    X_test = read_images(TEST_DATA_FILENAME, 400)
-    y_test = read_labels(TEST_LABELS_FILENAME, 400)
+    X_test = read_images(TEST_DATA_FILENAME, t_max)
+    y_test = read_labels(TEST_LABELS_FILENAME, t_max)
+
+    return X_train,  y_train, X_test, y_test
+
+def main():
+    n_max = 10000
+    t_max = 400
+    
+    X_train,  y_train, X_test, y_test = generate_data(n_max, t_max)
 
     """
     Feature Extraction
@@ -209,7 +216,7 @@ def main():
     KNN
     """
     # Basic KNN
-    # y_pred = basic_knn(X_train, y_train, X_test, 3)
+    y_pred = basic_knn(X_train, y_train, X_test, 3)
 
     # Weighted KNN
     # y_pred = weighted_knn(X_train, y_train, X_test, 3)
@@ -218,7 +225,7 @@ def main():
     # y_pred = rad_knn(X_train, y_train, X_test, 0.5)
 
     # KDTree KNN
-    y_pred = kd_tree_knn(X_train, y_train, X_test, 5)
+    # y_pred = kd_tree_knn(X_train, y_train, X_test, 5)
 
     print(calculate_accuracy(y_test, y_pred))
 
